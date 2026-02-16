@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Login.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Ventana_Principal_Vendedor.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Ventana_Principal_Administrador.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Registrar_Ventas.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Notificaciones.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Confirmar_Pedidos.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Generar_Reporte.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Registar_Cliente_Frecuente.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Registrar_Transferencias.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Venta.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Producto.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Empleado.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Notificacion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Pedido.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Cliente.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/ClienteDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/EmpleadoDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/NotificacionDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/PedidoDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/ProductoDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/VentaDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Categoria.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/DetalleNotificacion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/DetalleVenta.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/DetallePedido.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/Rol.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/TransferenciaStock.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/DetallesTransferenciaStock.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/VentaRegistroController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/ConfirmarPedidosController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/ReporteVentasController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/Registro_CliFrecuente.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/NotificacionesController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/TransferenciaStockController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/EstadoPedido.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/EstadoCliente.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/TipoCliente.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/MetodoPago.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/TipoComprobante.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/EstadoNotificacion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/TipoVenta.java</file>
+        </group>
+    </open-files>
+</project-private>

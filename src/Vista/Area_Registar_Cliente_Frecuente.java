@@ -8,14 +8,14 @@ package Vista;
  *
  * @author Usuario
  */
-public class Area extends javax.swing.JFrame {
+public class Area_Registar_Cliente_Frecuente extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Area.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Area_Registar_Cliente_Frecuente.class.getName());
 
     /**
      * Creates new form Area
      */
-    public Area() {
+    public Area_Registar_Cliente_Frecuente() {
         initComponents();
     }
 
@@ -66,7 +66,7 @@ public class Area extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Area().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Area_Registar_Cliente_Frecuente().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
