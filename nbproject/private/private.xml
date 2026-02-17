@@ -44,6 +44,12 @@
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/TipoComprobante.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/EstadoNotificacion.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Enum/TipoVenta.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/LoginController.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Conexion/dbConexion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Conexion/PruebaConexion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoOperacion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoAgregacion.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoIDPedidosPendientes.java</file>
         </group>
     </open-files>
 </project-private>

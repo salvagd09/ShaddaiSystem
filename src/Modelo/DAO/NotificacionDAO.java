@@ -4,10 +4,23 @@
  */
 package Modelo.DAO;
 
+import Modelo.Entidad.Notificacion;
+
 /**
  *
  * @author Usuario
  */
 public class NotificacionDAO {
-    
+    public void RegistrarNotificacion(){
+        
+    }
+    public void MostrarNotificaciones(){
+        
+    }
+    public void MostrarListaProductosStockBajo(Notificacion notificacion){
+        
+    }
+    public void NotificacionLeida(Notificacion notificacion){
+        
+    }
 }

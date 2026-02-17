@@ -1,13 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.DAO;
-
-/**
- *
- * @author Usuario
- */
+import Modelo.Conexion.dbConexion;
+import Modelo.Entidad.Cliente;
+import java.sql.Connection;
 public class ClienteDAO {
-    
+   public void RegistrarloComoFrecuente(Cliente cliente){
+       dbConexion dbc=new dbConexion();
+       Connection con = dbc.conectar();
+   }
+   public void MostrarDatosClientes(Cliente cliente){
+       
+   }
 }

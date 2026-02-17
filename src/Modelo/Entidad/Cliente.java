@@ -19,10 +19,20 @@ public class Cliente {
     private String Direccion;
     private String Correo;
     private EstadoCliente cliente;
+    private String RUC;
     private TipoCliente tipoCliente;
     public int getIDCliente() {
         return IDCliente;
     }
+
+    public String getRUC() {
+        return RUC;
+    }
+
+    public void setRUC(String RUC) {
+        this.RUC = RUC;
+    }
+    
     public EstadoCliente getCliente() {
         return cliente;
     }
