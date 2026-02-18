@@ -47,9 +47,11 @@
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Controlador/LoginController.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Conexion/dbConexion.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Conexion/PruebaConexion.java</file>
-            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoOperacion.java</file>
-            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoAgregacion.java</file>
-            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/Entidad/ResultadoIDPedidosPendientes.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ResultadoOperacionDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/RegistrarPedidoPendienteDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ResultadoIDPedidosDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/DetallesPedidoPendienteDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/DetallesPedidoConfirmadoDTO.java</file>
         </group>
     </open-files>
 </project-private>

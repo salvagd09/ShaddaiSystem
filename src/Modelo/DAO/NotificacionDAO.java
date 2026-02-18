@@ -15,12 +15,12 @@ public class NotificacionDAO {
         
     }
     public void MostrarNotificaciones(){
-        
+        String sql="{CALL Mostrar_Notificaciones()}";
     }
-    public void MostrarListaProductosStockBajo(Notificacion notificacion){
-        
+    public void MostrarListaProductosStockBajo(int IDNotificacion){
+        String sql="CALL {Mostrar_Lista_ProductosBajoStock(IN P_ID_Notificacion INT)}";
     }
-    public void NotificacionLeida(Notificacion notificacion){
-        
+    public void NotificacionLeida(int IDNotificacion){
+       String sql="CALL {Notificacion_Leida(?)}";
     }
 }

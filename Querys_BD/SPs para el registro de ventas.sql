@@ -6,7 +6,7 @@ Select * from Venta;
 DELIMITER //
 CREATE PROCEDURE Obtener_DatosP_Pedido_Confirmado(IN P_ID_Pedido INT)
 BEGIN
-	Select NombreCompleto,DNI,RUC FROM Pedido WHERE ID_Pedido=P_ID_Pedido AND Estado="Confirmado";
+	Select NombreCompleto,DNI,RUC FROM Cliente cl JOIN Pedido pe ON cl.ID_Cliente=pe.ID_Cliente WHERE pe.ID_Pedido=P_ID_Pedido AND Estado="Confirmado";
 END //
 DELIMITER ;
 DELIMITER //
@@ -77,7 +77,7 @@ BEGIN
         SELECT 'Error en la transacción' AS Error;
     END;
     START TRANSACTION;
-	SELECT ID_Producto,Precio,Stock _Tienda
+	SELECT ID_Producto,Precio,Stock_Tienda
     INTO v_id_Producto, v_precioUnitario, v_stock_actualTienda
     FROM Producto
     WHERE Codigo_Producto = P_Codigo_Producto;
@@ -121,7 +121,7 @@ DELIMITER //
 CREATE PROCEDURE Obtener_Codigos_Producto()
 BEGIN
 	Select Codigo_Producto FROM Productos
-    WHERE stock_Tienda>0;
+    WHERE Stock_Tienda>0;
 END//
 DELIMITER ;
 DELIMITER //

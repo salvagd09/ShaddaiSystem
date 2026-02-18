@@ -1,12 +1,12 @@
 USE shaddaiSystem;
 DELIMITER // 
-CREATE PROCEDURE Login_Rol(IN P_username VARCHAR(200),IN P_contrasena VARCHAR(100),OUT ID_Rol INT)
+CREATE PROCEDURE Login_Rol(IN P_username VARCHAR(200),IN P_contrasena VARCHAR(100))
 BEGIN
-	Select Rol INTO ID_Rol FROM Usuarios
+	Select ID_USUARIO,NombreRol from Usuarios u
+    INNER JOIN Roles r ON Rol=ID_ROL 
     Where username=P_username AND Contrasena=P_contrasena;
 END //
 DELIMITER ;
-DROP TRIGGER IF EXISTS Noficacion_Bajo_Stock
 /*Trigger para el CU06*/
 DELIMITER //
 /*Para insertar notificaciones*/
@@ -16,7 +16,7 @@ FOR EACH ROW
 BEGIN
 	DECLARE var_id_tienda INT DEFAULT NULL;
     DECLARE var_id_almacen INT DEFAULT NULL;
-    IF new.stock_tienda<new.stock_minimo THEN
+    IF new.Stock_Tienda<new.Stock_Minimo THEN
 		Select ID_Notificacion INTO var_id_tienda
 		FROM Notificacion
 		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en tienda'
@@ -27,9 +27,9 @@ BEGIN
 			SET var_id_tienda=LAST_INSERT_ID();
         END IF;
         INSERT INTO Detalles_Notificacion(ID_Notificacion,ID_Producto,Stock_Actual) VALUES
-        (var_id_tienda,NEW.id_producto,NEW.stock_tienda);
+        (var_id_tienda,NEW.ID_Producto,NEW.Stock_Tienda);
 	END IF;
-    IF new.stock_almacen<new.stock_minimo THEN
+    IF new.Stock_Almacen<new.Stock_Minimo THEN
     Select ID_Notificacion INTO var_id_almacen
 		FROM Notificacion
 		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en almacen'
@@ -40,7 +40,7 @@ BEGIN
 			SET var_id_almacen=LAST_INSERT_ID();
         END IF;
         INSERT INTO Detalles_Notificacion(ID_Notificacion,ID_Producto,Stock_Actual) VALUES
-        (var_id_almacen,NEW.id_producto,NEW.stock_almacen);
+        (var_id_almacen,NEW.ID_Producto,NEW.Stock_Almacen);
 	END IF;
 END //
 DELIMITER ;

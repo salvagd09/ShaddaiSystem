@@ -16,7 +16,7 @@ BEGIN
     END IF;
     /*Se busca al vendedor*/
     IF P_Nombre_Vendedor IS NOT NULL THEN
-        SELECT ID_Usuario INTO v_id_Vendedor
+        SELECT ID_USUARIO INTO v_id_Vendedor
         FROM Usuarios 
         WHERE ID_Rol = 2 
 		AND CONCAT(Nombres, ' ', Apellidos) = P_Nombre_Vendedor;

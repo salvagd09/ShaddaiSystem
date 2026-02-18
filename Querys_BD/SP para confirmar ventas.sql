@@ -51,7 +51,7 @@ BEGIN
     Select ID_Cliente INTO v_ID_Cliente FROM Cliente
     WHERE DNI=P_DNI;
     START TRANSACTION;
-    IF ID_Cliente IS NULL THEN
+    IF v_ID_Cliente IS NULL THEN
 		Select 'Error' AS Estado, 'Este cliente no tiene ningún pedido' AS Mensaje;
 	ELSE
 		Select ID_Pedido FROM Pedido WHERE ID_Cliente=v_ID_Cliente AND Estado="Pendiente";
@@ -72,7 +72,7 @@ DELIMITER //
 /*Sirve para poder ver la lista de productos del pedido que se quiere confirmar*/
 CREATE PROCEDURE Obtener_DatosDP_Pedido_Pendiente(IN P_ID_Pedido INT)
 BEGIN
-	Select pro.Nombre,dpe.cantidad,pro.stock_Tienda,IF(pro.stock_Tienda>=dpe.cantidad,'Si','No')AS Disponible FROM Producto pro
+	Select pro.Nombre,dpe.cantidad,pro.Stock_Tienda,IF(pro.Stock_Tienda>=dpe.cantidad,'Si','No')AS Disponible FROM Producto pro
     JOIN Detalles_Pedido dpe ON pro.ID_Producto=dpe.ID_Producto
     JOIN Pedido pe ON pe.ID_Pedido=dpe.ID_Pedido
     WHERE dpe.ID_Pedido=P_ID_Pedido AND pe.Estado="Pendiente";
@@ -84,7 +84,7 @@ permita confirmar ventas si hay productos que tienen el campo de disponible como
 que muestra los productos.*/
 CREATE PROCEDURE Confirmar_Pedido(IN P_ID_Pedido INT)
 BEGIN
-	UPDATE Pedido SET Estado="Confirmado" WHERE Pedido=P_ID_Pedido;
+	UPDATE Pedido SET Estado="Confirmado" WHERE ID_Pedido=P_ID_Pedido;
 END //
 DELIMITER ;
 DELIMITER //
@@ -95,7 +95,7 @@ CREATE PROCEDURE Actualizar_DP_Pedido_Pendiente(IN P_ID_Pedido INT,IN P_NombrePr
 BEGIN
 	DECLARE v_ID_Producto INT;
     DECLARE v_stockTienda INT;
-    Select ID_Producto,stock_Tienda into v_ID_Producto,v_stockTienda FROM Producto
+    Select ID_Producto,Stock_Tienda into v_ID_Producto,v_stockTienda FROM Producto
     WHERE Nombre=P_NombreProducto;
     START TRANSACTION;
     IF v_stockTienda<P_CantidadNueva THEN

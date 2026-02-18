@@ -15,8 +15,8 @@ import java.util.Map;
  * @author Usuario
  */
 public class EmpleadoDAO {
-    public Map<Integer,Integer> LoginPedido(String username,String password){
-        Map<Integer,Integer> RolEID=new HashMap<>();
+    public Map<Integer,String> LoginPedido(String username,String password){
+        Map<Integer,String> RolEID=new HashMap<>();
         String sql="{CALL Login_Rol(?,?)}";
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)) {
@@ -24,7 +24,7 @@ public class EmpleadoDAO {
             stmt.setString(2,password);
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){
-                RolEID.put(rs.getInt("ID_Usuario"), rs.getInt("ID_Rol"));
+                RolEID.put(rs.getInt("ID_USUARIO"), rs.getString("NombreRol"));
             }
         }catch(SQLException e){
             e.printStackTrace();

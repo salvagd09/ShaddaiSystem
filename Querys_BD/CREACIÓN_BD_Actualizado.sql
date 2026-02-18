@@ -38,6 +38,7 @@ ALTER TABLE Venta ADD COLUMN Metodo_Pago ENUM("Yape/Plin","Efectivo");
 ALTER TABLE Cliente ADD COLUMN Tipo_Cliente ENUM("Persona","Empresa");
 ALTER TABLE Usuarios ADD COLUMN username VARCHAR(200) UNIQUE;
 ALTER TABLE Usuarios ADD CONSTRAINT UNIQUE(Contrasena);
+ALTER TABLE Venta MODIFY Tipo_Comprobante enum("Boleta","Factura");
 /*Procedimientos para registrar una transferencia de tipo CU05 así como sus detalles*/
 DELIMITER //
 CREATE PROCEDURE Registrar_Transferencia 
@@ -88,7 +89,7 @@ DELIMITER //
 CREATE PROCEDURE Obtener_Codigos_ProductoTraslado()
 BEGIN
 	Select Codigo_Producto FROM Productos
-    WHERE stock_Almacen>0;
+    WHERE Stock_Almacen>0;
 END//
 DELIMITER ;
 DELIMITER //
