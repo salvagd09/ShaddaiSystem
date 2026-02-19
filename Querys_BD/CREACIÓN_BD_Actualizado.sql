@@ -51,7 +51,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE Registrar_Detalle_Transferencia(IN P_ID_Transferencia INT,IN P_ID_Producto INT,IN P_Cantidad INT)
 BEGIN
-	INSERT INTO Detalles_TransferenciaTienda(ID_Transferencia,ID_Producto,Cantidad) VALUES (P_ID_Transferencia,P_ID_Producto,Cantidad);
+	INSERT INTO Detalles_TransferenciaTienda(ID_Transferencia,ID_Producto,Cantidad) VALUES (P_ID_Transferencia,P_ID_Producto,P_Cantidad);
     UPDATE Producto
     SET Stock_Tienda=Stock_Tienda+P_Cantidad,
 	Stock_Almacen=Stock_Almacen-P_Cantidad
@@ -62,7 +62,7 @@ DELIMITER //
 /*Procedimiento almacenado para validar cantidad a trasladar y poder agregar datos en la lista 
 de productos a trasladar*/
 CREATE PROCEDURE Validar_Cantidad_Trasladar(
-    IN P_Codigo_Producto VARCHAR(50),
+    IN P_Nombre_Producto VARCHAR(200),
     IN P_Cantidad INT
 )
 BEGIN
@@ -71,8 +71,8 @@ BEGIN
     DECLARE v_Unidad_Medida VARCHAR(50);
     SELECT Stock_Almacen,Nombre,Unidad_Medida INTO v_stock_actualAlmacen,v_Nombre,v_Unidad_Medida 
     FROM Producto
-    WHERE Codigo_Producto = P_Codigo_Producto;
-    IF P_Cantidad > 0 AND P_Cantidad <= v_stock_actualAlmacen THEN
+    WHERE Nombre = P_Nombre_Producto;
+    IF P_Cantidad <= 0 OR P_Cantidad > v_stock_actualAlmacen THEN
 		SELECT 'Error' AS Estado,
          CONCAT('Stock insuficiente. Disponible: ', v_stock_actualAlmacen) AS Mensaje;
     ELSE
@@ -80,15 +80,15 @@ BEGIN
         'Cantidad valida para traslado' AS Mensaje,
         v_Nombre as Nombre,
         P_Cantidad as Cantidad,
-        v_Unidad_Medida as 'Unidad de Medida';
+        v_Unidad_Medida as `Unidad de Medida`;
     END IF;
 END //
 DELIMITER ;
 DELIMITER //
 /*Mostrar productos a trasladar*/
-CREATE PROCEDURE Obtener_Codigos_ProductoTraslado()
+CREATE PROCEDURE Obtener_Nombres_ProductoTraslado()
 BEGIN
-	Select Codigo_Producto FROM Productos
+	Select Nombre FROM Productos
     WHERE Stock_Almacen>0;
 END//
 DELIMITER ;

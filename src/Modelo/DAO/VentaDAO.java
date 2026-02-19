@@ -28,7 +28,7 @@ public class VentaDAO {
         int idVentaGenerada=0;
         return idVentaGenerada;
     }
-    public void RegistrarDetalleVenta(int idVentaGenerada,String codigoProducto,int Cantidad){
+    public void RegistrarDetalleVenta(int idVentaGenerada,String nombreProducto,int Cantidad){
         String sql="{CALL Registrar_Detalle_Venta(?,?,?)}";
     }
     /*En la BD es Contabilizar_Compras_Mes pero en si representa las ventas que ha

@@ -32,19 +32,39 @@ public class ProductoDAO {
         }
         return idTransferencia;
     }
-    public void RegistrarDetalleTransferencia(int idTransferencia,int idProducto,int Cantidad){
+    public boolean RegistrarDetalleTransferencia(int idTransferencia,int idProducto,int Cantidad){
         String sql="{CALL Registrar_Detalle_Transferencia(?,?,?)}";
+        try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+            stmt.setInt(1,idTransferencia);
+            stmt.setInt(2,idProducto);
+            stmt.setInt(3, Cantidad);
+            stmt.execute();
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
-    public void ValidarCantidadProductoTienda(String codigoProducto,int Cantidad){
+    public void ValidarCantidadProductoTienda(String nombreProducto,int Cantidad){
+        /*Aún falta*/
       String sql="{CALL Validar_cantidad_y_producto(?,?)}";
+      try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+          stmt.setString(1,nombreProducto);
+          stmt.setInt(2,Cantidad);
+      }catch(SQLException e){
+          e.printStackTrace();
+          
+      }
     }
-    public void ValidarCantidadProductoAlmacen(String codigoProducto,int Cantidad){
+    public void ValidarCantidadProductoAlmacen(String nombreProducto,int Cantidad){
         String sql="{CALL  Validar_Cantidad_Trasladar(?,?)}";
     }
-    public void ObtenerCodigoProductoVenta(){
-        String sql="{CALL Obtener_Codigos_Producto()}";
+    public void ObtenerNombresProductoVenta(){
+        String sql="{CALL Obtener_Nombres_Producto()}";
     }
-    public void ObtenerCodigoProductoTrasladar(){
+    public void ObtenerNombresProductoTrasladar(){
         String sql="{CALL Obtener_Codigos_ProductoTraslado()}";
     }
 }

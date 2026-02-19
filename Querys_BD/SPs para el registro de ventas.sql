@@ -91,7 +91,7 @@ END //
 DELIMITER ;
 Select * from Cliente;
 DELIMITER //
-CREATE PROCEDURE Validar_cantidad_y_producto(IN P_Codigo_Producto VARCHAR(50), IN P_Cantidad INT)
+CREATE PROCEDURE Validar_cantidad_y_producto(IN P_Nombre_Producto VARCHAR(200), IN P_Cantidad INT)
 BEGIN
 	DECLARE v_stock_actualTienda INT;
     DECLARE v_nombre VARCHAR(255);
@@ -99,7 +99,7 @@ BEGIN
     SELECT Stock_Tienda, Nombre, Precio 
     INTO v_stock_actualTienda, v_nombre, v_precio
     FROM Producto
-    WHERE Codigo_Producto = P_Codigo_Producto;
+    WHERE Nombre = P_Nombre_Producto;
         IF v_stock_actualTienda < P_Cantidad THEN
         SELECT 
             'ERROR' AS Estado, 
@@ -118,9 +118,9 @@ END //
 DELIMITER ;
 DELIMITER //
 /*Sirve para que el usuario pueda seleccionar un producto en el ComboBox*/
-CREATE PROCEDURE Obtener_Codigos_Producto()
+CREATE PROCEDURE Obtener_Nombres_Producto()
 BEGIN
-	Select Codigo_Producto FROM Productos
+	Select Nombre FROM Productos
     WHERE Stock_Tienda>0;
 END//
 DELIMITER ;

@@ -41,12 +41,12 @@ public class PedidoDAO {
         }
         return new RegistrarPedidoPendienteDTO("Error","No se pudo obtener respuesta del servidor.",-1);
     };
-    public boolean AgregarDetallesPedidoPendiente(int idPedido,String codigoProducto,int Cantidad){
+    public boolean AgregarDetallesPedidoPendiente(int idPedido,String nombreProducto,int Cantidad){
         String sql="{CALL SP_Pedido_Pendiente_Detalles(?,?,?)}";
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
             stmt.setInt(1,idPedido);
-            stmt.setString(2,codigoProducto);
+            stmt.setString(2,nombreProducto);
             stmt.setInt(3, Cantidad);
             stmt.execute();
             return true;
@@ -152,7 +152,7 @@ public class PedidoDAO {
         }
         return NombreYFecha;
     }
-    public List<DetallesPedidoPendienteDTO> ObtenerDetallesPPendientes(int idPedido,String codigo_Producto,int cantidad){
+    public List<DetallesPedidoPendienteDTO> ObtenerDetallesPPendientes(int idPedido){
        String sql="{CALL Obtener_DatosDP_Pedido_Confirmado(?)}";
        List<DetallesPedidoPendienteDTO> listaDPedidos = new ArrayList<>();
        try (Connection conn = new dbConexion().conectar();
