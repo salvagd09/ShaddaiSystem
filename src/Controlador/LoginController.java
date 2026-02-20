@@ -5,6 +5,7 @@
 package Controlador;
 
 import Modelo.DAO.EmpleadoDAO;
+import java.util.Map;
 
 /**
  *
@@ -12,7 +13,7 @@ import Modelo.DAO.EmpleadoDAO;
  */
 public class LoginController {
     private EmpleadoDAO empleadoDAO=new EmpleadoDAO();
-    public void AutenticarUsuario(String username,String contrasena){
-        empleadoDAO.LoginPedido(username,contrasena);
+    public Map<Integer,String> AutenticarUsuario(String username,String contrasena){
+        return empleadoDAO.LoginPedido(username,contrasena);
     }
 }

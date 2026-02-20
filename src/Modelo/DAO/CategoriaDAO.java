@@ -5,7 +5,6 @@
 package Modelo.DAO;
 
 import Modelo.Conexion.dbConexion;
-import Modelo.DTO.ValidarCantidadTiendaDTO;
 import com.mysql.cj.jdbc.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;

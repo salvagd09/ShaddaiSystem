@@ -4,10 +4,18 @@
  */
 package Controlador;
 
+import Modelo.DAO.CategoriaDAO;
+import Modelo.DAO.EmpleadoDAO;
+import Modelo.DAO.ProductoDAO;
+import Modelo.DAO.VentaDAO;
+
 /**
  *
  * @author Usuario
  */
 public class ReporteVentasController {
-    
+    private VentaDAO ventaDAO;
+    private CategoriaDAO categoriaDAO;
+    private ProductoDAO productoDAO;
+    private EmpleadoDAO empleadoDAO;
 }

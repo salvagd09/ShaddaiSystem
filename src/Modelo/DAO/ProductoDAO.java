@@ -20,36 +20,6 @@ import java.util.List;
  * @author Usuario
  */
 public class ProductoDAO {
-    public int RegistrarTransferencia(int idUsuario){
-        String sql="{CALL Registrar_Transferencia (?)}";
-        int idTransferencia=0;
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
-            stmt.setInt(1,idUsuario);
-            ResultSet rs=stmt.executeQuery();
-            if(rs.next()){
-                idTransferencia=rs.getInt("P_ID_GENERADO");
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-            return -1;
-        }
-        return idTransferencia;
-    }
-    public boolean RegistrarDetalleTransferencia(int idTransferencia,int idProducto,int Cantidad){
-        String sql="{CALL Registrar_Detalle_Transferencia(?,?,?)}";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
-            stmt.setInt(1,idTransferencia);
-            stmt.setInt(2,idProducto);
-            stmt.setInt(3, Cantidad);
-            stmt.execute();
-            return true;
-        }catch(SQLException e){
-            e.printStackTrace();
-            return false;
-        }
-    }
     public ValidarCantidadTiendaDTO ValidarCantidadProductoTienda(String nombreProducto,int Cantidad){
         /*Aún falta*/
       String sql="{CALL Validar_cantidad_y_producto(?,?)}";
