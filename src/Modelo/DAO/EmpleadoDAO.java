@@ -7,7 +7,9 @@ package Modelo.DAO;
 import Modelo.Conexion.dbConexion;
 import com.mysql.cj.jdbc.CallableStatement;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,5 +33,20 @@ public class EmpleadoDAO {
            throw new Error("Error en la base de datos: " + e.getMessage());
         }
         return RolEID;
+    }
+    public List<String> ObtenerNombresVendedor(){
+        String sql="{CALL Obtener_Nombres_Vendedor()}";
+        List<String> nombresV=new ArrayList<>();
+         try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                nombresV.add(rs.getString("Vendedor"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new Error("Error en BD: "+e.getMessage());
+        }
+         return nombresV;
     }
 }

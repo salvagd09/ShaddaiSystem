@@ -8,20 +8,20 @@ package Modelo.DTO;
  *
  * @author Usuario
  */
-public class ResultadoValidacionDTO {
+public class ValidarCantidadAlmacenDTO {
     private boolean Exitoso;
     private String Mensaje;
     private String Nombre;
     private int  Cantidad;
     private String UnidadMedida;
-    public ResultadoValidacionDTO(boolean Exitoso, String Mensaje, String Nombre, int Cantidad, String UnidadMedida) {
+    public ValidarCantidadAlmacenDTO(boolean Exitoso, String Mensaje, String Nombre, int Cantidad, String UnidadMedida) {
         this.Exitoso = Exitoso;
         this.Mensaje = Mensaje;
         this.Nombre = Nombre;
         this.Cantidad = Cantidad;
         this.UnidadMedida = UnidadMedida;
     }
-    public ResultadoValidacionDTO(String mensajeError){
+    public ValidarCantidadAlmacenDTO(String mensajeError){
         this.Exitoso=false;
         this.Mensaje=mensajeError;
         this.Nombre=null;
@@ -30,9 +30,6 @@ public class ResultadoValidacionDTO {
     }
     public boolean esExitoso() { return Exitoso; }
     public String getMensaje() { return Mensaje; }
-    public boolean isExitoso() {
-        return Exitoso;
-    }
     public String getNombre() {
         return Nombre;
     }

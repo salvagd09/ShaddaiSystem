@@ -7,7 +7,6 @@ import Modelo.DTO.DetallesPedidoPendienteDTO;
 import Modelo.DTO.RegistrarPedidoPendienteDTO;
 import Modelo.DTO.ResultadoIDPedidosDTO;
 import Modelo.Entidad.Cliente;
-import Modelo.Entidad.DetallePedido;
 import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.Enum.EstadoPedido;
 import com.mysql.cj.jdbc.CallableStatement;
@@ -27,7 +26,12 @@ public class PedidoDAO {
             stmt.setString(1, tipoP.name());
             stmt.setString(2,cliente.getTipoCliente().name());
             stmt.setString(3, cliente.getDNI());
-            stmt.setString(4, cliente.getRUC());
+             if(cliente.getRUC()!=null && !cliente.getRUC().isEmpty()){
+                stmt.setString(4,cliente.getRUC());
+            }
+            else{
+                stmt.setNull(4, Types.VARCHAR);
+            }
             stmt.setString(5,cliente.getNombreCompleto());
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){

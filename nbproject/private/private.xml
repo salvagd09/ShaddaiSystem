@@ -52,7 +52,15 @@
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ResultadoIDPedidosDTO.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/DetallesPedidoPendienteDTO.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/DetallesPedidoConfirmadoDTO.java</file>
-            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ResultadoValidacionDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ValidarCantidadAlmacenDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ValidarCantidadTiendaDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/DatosParaClienteFrecuenteDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/VentaProductosDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/VentaCategoriaDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/VentasVendedorDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ReporteVentasDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/CategoriaDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/MostrarDatosClienteDTO.java</file>
         </group>
     </open-files>
 </project-private>

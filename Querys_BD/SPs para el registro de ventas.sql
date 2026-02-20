@@ -121,23 +121,34 @@ DELIMITER //
 CREATE PROCEDURE Obtener_Nombres_Producto()
 BEGIN
 	Select Nombre FROM Productos
-    WHERE Stock_Tienda>0;
+    WHERE Stock_Tienda>0
+    ORDER BY Nombre;
 END//
 DELIMITER ;
 DELIMITER //
-/*Sirve para rellenar de forma automática los campos de Nombres y Apellidos y RUC en la interfaz gráfica.*/
-CREATE PROCEDURE Mostrar_Datos_Cliente(IN P_Tipo_Cliente ENUM("Persona","Empresa"), IN P_DNI VARCHAR(8))
+CREATE PROCEDURE Mostrar_Datos_Cliente(
+    IN P_Tipo_Cliente VARCHAR(20),
+    IN P_DNI VARCHAR(8)
+)
 BEGIN
-	DECLARE v_ID_Cliente INT;
+    DECLARE v_ID_Cliente INT DEFAULT NULL;
     DECLARE v_RUC VARCHAR(11);
     DECLARE v_NombreCompleto VARCHAR(300);
-    Select ID_Cliente,RUC,NombreCompleto INTO v_ID_Cliente,v_RUC,v_nombreCompleto FROM Cliente WHERE Tipo_Cliente=P_Tipo_Cliente AND DNI=P_DNI;
+    SELECT ID_Cliente, RUC, NombreCompleto 
+    INTO v_ID_Cliente, v_RUC, v_NombreCompleto 
+    FROM Cliente 
+    WHERE Tipo_Cliente = P_Tipo_Cliente 
+      AND DNI = P_DNI;
     IF v_ID_Cliente IS NULL THEN
-		Select 'Error' as Estado,'Cliente no existe' as Mensaje;
+        SELECT 'Error' AS Estado, 
+               'Cliente no existe' AS Mensaje,
+               NULL AS RUC,
+               NULL AS NombreCompleto;
     ELSE
-		Select 'OK' as Estado,
-        v_RUC AS RUC,
-        V_NombreCompleto AS NombreCompleto;
-	END IF;
+        SELECT 'OK' AS Estado,
+               CONCAT('Cliente ', v_NombreCompleto, ' encontrado') AS Mensaje,
+               IFNULL(v_RUC, '') AS RUC, 
+               v_NombreCompleto AS NombreCompleto;
+    END IF;
 END //
 DELIMITER ;

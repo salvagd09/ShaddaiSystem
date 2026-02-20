@@ -11,5 +11,8 @@ import Modelo.DAO.EmpleadoDAO;
  * @author Usuario
  */
 public class LoginController {
-    private EmpleadoDAO empleadoDAO;
+    private EmpleadoDAO empleadoDAO=new EmpleadoDAO();
+    public void AutenticarUsuario(String username,String contrasena){
+        empleadoDAO.LoginPedido(username,contrasena);
+    }
 }

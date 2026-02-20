@@ -66,4 +66,10 @@ BEGIN
     ORDER BY Monto_Total DESC;
 END //
 DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE Obtener_Nombres_Vendedor()
+BEGIN
+	Select CONCAT(Nombres,' ',Apellidos) AS Vendedor FROM Usuarios WHERE Rol=2;
+END //
+DELIMITER ;
 INSERT INTO Roles(NombreRol) VALUES ('Administrador'),('Vendedor'),('Almacenero')

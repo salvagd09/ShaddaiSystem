@@ -89,7 +89,8 @@ DELIMITER //
 CREATE PROCEDURE Obtener_Nombres_ProductoTraslado()
 BEGIN
 	Select Nombre FROM Productos
-    WHERE Stock_Almacen>0;
+    WHERE Stock_Almacen>0
+    ORDER BY Nombre;
 END//
 DELIMITER ;
 DELIMITER //
@@ -108,8 +109,8 @@ afirma si un cliente ya existe en CU01*/
 CREATE PROCEDURE Contabilizar_Compras_Mes(IN P_DNI VARCHAR(8),IN P_RUC VARCHAR(11))
 BEGIN
 	Select c.NombreCompleto AS Nombre_Cliente,
-    v.ID_Venta,
-    v.Fecha_Venta,
+    v.ID_Venta as ID_Venta,
+    v.Fecha as Fecha,
     (SELECT COUNT(*) FROM Venta v2 WHERE v2.ID_Cliente=c.ID_Cliente 
     AND MONTH(v.Fecha)=MONTH(CURDATE())
     AND YEAR(v.Fecha)=YEAR(CURDATE())) AS Total_Compras_Mes
