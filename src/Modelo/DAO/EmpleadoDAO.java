@@ -5,6 +5,7 @@
 package Modelo.DAO;
 
 import Modelo.Conexion.dbConexion;
+import Modelo.DTO.LoginResultDTO;
 import com.mysql.cj.jdbc.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author Usuario
  */
 public class EmpleadoDAO {
-    public Map<Integer,String> LoginPedido(String username,String password){
+    public LoginResultDTO LoginPedido(String username,String password){
         Map<Integer,String> RolEID=new HashMap<>();
         String sql="{CALL Login_Rol(?,?)}";
         try (Connection conn = new dbConexion().conectar();
@@ -26,13 +27,14 @@ public class EmpleadoDAO {
             stmt.setString(2,password);
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){
-                RolEID.put(rs.getInt("ID_USUARIO"), rs.getString("NombreRol"));
+                int idUsuario=rs.getInt("ID_USUARIO");
+                String NombreRol=rs.getString("NombreRol");
+                return new LoginResultDTO(idUsuario,NombreRol);
             }
         }catch(SQLException e){
             e.printStackTrace();
-           throw new Error("Error en la base de datos: " + e.getMessage());
         }
-        return RolEID;
+        return null;
     }
     public List<String> ObtenerNombresVendedor(){
         String sql="{CALL Obtener_Nombres_Vendedor()}";

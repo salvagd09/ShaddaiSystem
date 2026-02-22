@@ -11,12 +11,12 @@ package Vista;
 public class Ventana_Principal_Vendedor extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Ventana_Principal_Vendedor.class.getName());
-
-    /**
-     * Creates new form Ventana_Principal_Vendedor
-     */
-    public Ventana_Principal_Vendedor() {
+    private int idUsuario;
+    public Ventana_Principal_Vendedor(int idUsuario) {
         initComponents();
+        setTitle("Ventana principal del Vendedor");
+        setLocationRelativeTo(null);
+        this.idUsuario=idUsuario;
     }
 
     /**
@@ -28,47 +28,155 @@ public class Ventana_Principal_Vendedor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        CerrarSesionBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        RegistrarVentaBtn = new javax.swing.JButton();
+        ConfirmarPedidoBtn = new javax.swing.JButton();
+        RegistrarFrecuenteBtn = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 214, 10));
+
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook", 0, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Ventana principal del Vendedor");
+
+        CerrarSesionBtn.setBackground(new java.awt.Color(214, 40, 40));
+        CerrarSesionBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        CerrarSesionBtn.setForeground(new java.awt.Color(255, 255, 255));
+        CerrarSesionBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Log out icon.png"))); // NOI18N
+        CerrarSesionBtn.setText("Cerrar sesión");
+        CerrarSesionBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        CerrarSesionBtn.setVerifyInputWhenFocusTarget(false);
+        CerrarSesionBtn.addActionListener(this::CerrarSesionBtnActionPerformed);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Vendedora.png"))); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 125, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("¿Qué deseas realizar hoy?");
+
+        RegistrarVentaBtn.setBackground(new java.awt.Color(153, 217, 140));
+        RegistrarVentaBtn.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        RegistrarVentaBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Registro_Venta.png"))); // NOI18N
+        RegistrarVentaBtn.setText("Registrar venta");
+        RegistrarVentaBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        RegistrarVentaBtn.addActionListener(this::RegistrarVentaBtnActionPerformed);
+
+        ConfirmarPedidoBtn.setBackground(new java.awt.Color(255, 125, 0));
+        ConfirmarPedidoBtn.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        ConfirmarPedidoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/confirmar.png"))); // NOI18N
+        ConfirmarPedidoBtn.setText("Confirmar pedidos");
+        ConfirmarPedidoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ConfirmarPedidoBtn.addActionListener(this::ConfirmarPedidoBtnActionPerformed);
+
+        RegistrarFrecuenteBtn.setBackground(new java.awt.Color(30, 150, 252));
+        RegistrarFrecuenteBtn.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        RegistrarFrecuenteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Frecuente.png"))); // NOI18N
+        RegistrarFrecuenteBtn.setText("Registrar Cliente como Frecuente");
+        RegistrarFrecuenteBtn.addActionListener(this::RegistrarFrecuenteBtnActionPerformed);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(RegistrarVentaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ConfirmarPedidoBtn)
+                .addGap(92, 92, 92))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(CerrarSesionBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addGap(16, 16, 16))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(224, 224, 224)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(RegistrarFrecuenteBtn)
+                .addGap(192, 192, 192))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CerrarSesionBtn)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(RegistrarVentaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ConfirmarPedidoBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(RegistrarFrecuenteBtn)
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void RegistrarVentaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarVentaBtnActionPerformed
+        this.dispose();
+        new Registrar_Ventas(idUsuario).setVisible(true);
+    }//GEN-LAST:event_RegistrarVentaBtnActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Ventana_Principal_Vendedor().setVisible(true));
-    }
+    private void ConfirmarPedidoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarPedidoBtnActionPerformed
+        this.dispose();
+        new Area_Confirmar_Pedidos().setVisible(true);
+    }//GEN-LAST:event_ConfirmarPedidoBtnActionPerformed
+
+    private void RegistrarFrecuenteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarFrecuenteBtnActionPerformed
+        this.dispose();
+        new Area_Registar_Cliente_Frecuente().setVisible(true);
+    }//GEN-LAST:event_RegistrarFrecuenteBtnActionPerformed
+
+    private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed
+          this.dispose();
+         new Login().setVisible(true);
+    }//GEN-LAST:event_CerrarSesionBtnActionPerformed
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CerrarSesionBtn;
+    private javax.swing.JButton ConfirmarPedidoBtn;
+    private javax.swing.JButton RegistrarFrecuenteBtn;
+    private javax.swing.JButton RegistrarVentaBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,12 +11,12 @@ package Vista;
 public class Ventana_Principal_Administrador extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Ventana_Principal_Administrador.class.getName());
-
-    /**
-     * Creates new form Ventana_Principal_Administrador
-     */
-    public Ventana_Principal_Administrador() {
+    private int idUsuario;
+    public Ventana_Principal_Administrador(int IDUsuario) {
         initComponents();
+        setTitle("Ventana principal del Administrador");
+        setLocationRelativeTo(null);
+        this.idUsuario=IDUsuario;
     }
 
     /**
@@ -28,47 +28,136 @@ public class Ventana_Principal_Administrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        AreaReporteBtn = new javax.swing.JButton();
+        AreaNotificacionesBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        CerrarSesionBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 125, 0));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook", 0, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Ventana principal del Administrador");
+
+        AreaReporteBtn.setBackground(new java.awt.Color(30, 150, 252));
+        AreaReporteBtn.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        AreaReporteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Reporte.png"))); // NOI18N
+        AreaReporteBtn.setText("Generar reporte de ventas");
+        AreaReporteBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        AreaReporteBtn.addActionListener(this::AreaReporteBtnActionPerformed);
+
+        AreaNotificacionesBtn.setBackground(new java.awt.Color(255, 214, 10));
+        AreaNotificacionesBtn.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        AreaNotificacionesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Notificaiones.png"))); // NOI18N
+        AreaNotificacionesBtn.setText("Área de Notificaciones");
+        AreaNotificacionesBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        AreaNotificacionesBtn.addActionListener(this::AreaNotificacionesBtnActionPerformed);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("¿Qué deseas realizar hoy?");
+
+        CerrarSesionBtn.setBackground(new java.awt.Color(214, 40, 40));
+        CerrarSesionBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        CerrarSesionBtn.setForeground(new java.awt.Color(255, 255, 255));
+        CerrarSesionBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Log out icon.png"))); // NOI18N
+        CerrarSesionBtn.setText("Cerrar sesión");
+        CerrarSesionBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        CerrarSesionBtn.setVerifyInputWhenFocusTarget(false);
+        CerrarSesionBtn.addActionListener(this::CerrarSesionBtnActionPerformed);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Administrador.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(AreaReporteBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(AreaNotificacionesBtn)
+                .addGap(77, 77, 77))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)))
+                .addGap(181, 181, 181))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(CerrarSesionBtn)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CerrarSesionBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AreaNotificacionesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AreaReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(135, 135, 135))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void AreaNotificacionesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaNotificacionesBtnActionPerformed
+        this.dispose();
+        new Area_Generar_Reporte().setVisible(true);
+    }//GEN-LAST:event_AreaNotificacionesBtnActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Ventana_Principal_Administrador().setVisible(true));
-    }
+    private void AreaReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaReporteBtnActionPerformed
+        this.dispose();
+        new Area_Generar_Reporte().setVisible(true);
+    }//GEN-LAST:event_AreaReporteBtnActionPerformed
+
+    private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed
+        this.dispose();
+         new Login().setVisible(true);
+    }//GEN-LAST:event_CerrarSesionBtnActionPerformed
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AreaNotificacionesBtn;
+    private javax.swing.JButton AreaReporteBtn;
+    private javax.swing.JButton CerrarSesionBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

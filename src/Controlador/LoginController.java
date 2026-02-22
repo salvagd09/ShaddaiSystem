@@ -5,6 +5,7 @@
 package Controlador;
 
 import Modelo.DAO.EmpleadoDAO;
+import Modelo.DTO.LoginResultDTO;
 import java.util.Map;
 
 /**
@@ -13,7 +14,13 @@ import java.util.Map;
  */
 public class LoginController {
     private EmpleadoDAO empleadoDAO=new EmpleadoDAO();
-    public Map<Integer,String> AutenticarUsuario(String username,String contrasena){
+    public LoginResultDTO AutenticarUsuario(String username,String contrasena){
+        if (username == null || username.trim().isEmpty()) {
+            return null;
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            return null;
+        }
         return empleadoDAO.LoginPedido(username,contrasena);
     }
 }
