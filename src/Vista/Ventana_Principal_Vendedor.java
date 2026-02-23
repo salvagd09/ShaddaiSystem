@@ -149,7 +149,7 @@ public class Ventana_Principal_Vendedor extends javax.swing.JFrame {
 
     private void RegistrarVentaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarVentaBtnActionPerformed
         this.dispose();
-        new Registrar_Ventas(idUsuario).setVisible(true);
+        new ModuloVentas(idUsuario).setVisible(true);
     }//GEN-LAST:event_RegistrarVentaBtnActionPerformed
 
     private void ConfirmarPedidoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarPedidoBtnActionPerformed
