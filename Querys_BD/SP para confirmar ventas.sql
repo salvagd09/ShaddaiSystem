@@ -2,7 +2,7 @@ USE shaddaiSystem;
 /*SP para marcar un registrar un pedido como Pendiente*/
 DELIMITER //
 CREATE PROCEDURE SP_Pedido_Pendiente(IN P_Tipo_Pedido ENUM("Tienda","Whatsapp"),IN P_Tipo_Cliente ENUM("Persona","Empresa"),
-IN P_DNI VARCHAR(9),IN P_RUC VARCHAR(11),IN P_NombreCompleto VARCHAR(300))
+IN P_DNI VARCHAR(8),IN P_RUC VARCHAR(11),IN P_NombreCompleto VARCHAR(300))
 BEGIN
 	DECLARE v_ID_Cliente INT;
     DECLARE v_ID_Pedido INT;
