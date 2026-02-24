@@ -79,26 +79,36 @@ DROP PROCEDURE IF EXISTS Registrar_Venta //
 CREATE PROCEDURE Registrar_Venta(
     IN P_Tipo_Venta ENUM('Tienda', 'Whatsapp'),
     IN P_ID_Usuario INT,
+    IN P_Tipo_Cliente ENUM('Persona', 'Empresa'),
     IN P_DNI_Cliente VARCHAR(8),
-    IN P_Nombre_Cliente VARCHAR(300),
+    IN P_RUC_Cliente VARCHAR(11),
+    IN P_Nombre_Cliente VARCHAR(300), 
     IN P_Tipo_Comprobante ENUM('Boleta', 'Factura'),
     IN P_Metodo_Pago ENUM('Yape/Plin', 'Efectivo')
 )
 BEGIN
-    DECLARE v_ID_Cliente INT;
+    DECLARE v_ID_Cliente INT DEFAULT NULL;
     DECLARE v_ID_Venta INT;
 
     START TRANSACTION;
 
-    IF P_DNI_Cliente IS NOT NULL AND P_DNI_Cliente != '' THEN
+    IF P_Tipo_Cliente = 'Persona' AND P_DNI_Cliente IS NOT NULL AND P_DNI_Cliente != '' THEN
         SELECT ID_Cliente INTO v_ID_Cliente FROM Cliente WHERE DNI = P_DNI_Cliente LIMIT 1;
         
         IF v_ID_Cliente IS NULL THEN
-            INSERT INTO Cliente (DNI, NombreCompleto) VALUES (P_DNI_Cliente, IFNULL(P_Nombre_Cliente, 'Cliente Sin Nombre'));
+            INSERT INTO Cliente (DNI, NombreCompleto, Tipo_Cliente, Estado) 
+            VALUES (P_DNI_Cliente, IFNULL(P_Nombre_Cliente, 'Cliente Sin Nombre'), 'Persona', 'No Frecuente');
             SET v_ID_Cliente = LAST_INSERT_ID();
         END IF;
-    ELSE
-        SET v_ID_Cliente = NULL;
+        
+    ELSEIF P_Tipo_Cliente = 'Empresa' AND P_RUC_Cliente IS NOT NULL AND P_RUC_Cliente != '' THEN
+        SELECT ID_Cliente INTO v_ID_Cliente FROM Cliente WHERE RUC = P_RUC_Cliente LIMIT 1;
+        
+        IF v_ID_Cliente IS NULL THEN
+            INSERT INTO Cliente (RUC, NombreCompleto, Tipo_Cliente, Estado) 
+            VALUES (P_RUC_Cliente, IFNULL(P_Nombre_Cliente, 'Empresa Sin Nombre'), 'Empresa', 'No Frecuente');
+            SET v_ID_Cliente = LAST_INSERT_ID();
+        END IF;
     END IF;
 
     INSERT INTO Venta (ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante, Tipo_Venta, Metodo_Pago) 
@@ -110,5 +120,3 @@ BEGIN
     SELECT 'OK' AS Estado, 'Venta registrada' AS Mensaje, v_ID_Venta AS ID_Venta_Generado;
 END //
 DELIMITER ;
-
-
