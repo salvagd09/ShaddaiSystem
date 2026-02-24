@@ -101,7 +101,7 @@ BEGIN
     IF v_stockTienda<P_CantidadNueva THEN
 		Select 'Error' as Estado,'Esa cantidad no es valida para la actualizacion' AS Mensaje;
 	ELSE
-		UPDATE Detalle_Pedido SET cantidad=P_CantidadNueva WHERE ID_Pedido=P_ID_Pedido AND ID_Producto=v_ID_Producto;
+		UPDATE Detalles_Pedido SET cantidad=P_CantidadNueva WHERE ID_Pedido=P_ID_Pedido AND ID_Producto=v_ID_Producto;
         COMMIT;
         Select 'OK' as Estado,'Cantidad actualizada correctamente' as Mensaje;
 	END IF;
