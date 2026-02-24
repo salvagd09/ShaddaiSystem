@@ -73,3 +73,42 @@ END //
 DELIMITER ;
 
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS Registrar_Venta //
+
+CREATE PROCEDURE Registrar_Venta(
+    IN P_Tipo_Venta ENUM('Tienda', 'Whatsapp'),
+    IN P_ID_Usuario INT,
+    IN P_DNI_Cliente VARCHAR(8),
+    IN P_Nombre_Cliente VARCHAR(300),
+    IN P_Tipo_Comprobante ENUM('Boleta', 'Factura'),
+    IN P_Metodo_Pago ENUM('Yape/Plin', 'Efectivo')
+)
+BEGIN
+    DECLARE v_ID_Cliente INT;
+    DECLARE v_ID_Venta INT;
+
+    START TRANSACTION;
+
+    IF P_DNI_Cliente IS NOT NULL AND P_DNI_Cliente != '' THEN
+        SELECT ID_Cliente INTO v_ID_Cliente FROM Cliente WHERE DNI = P_DNI_Cliente LIMIT 1;
+        
+        IF v_ID_Cliente IS NULL THEN
+            INSERT INTO Cliente (DNI, NombreCompleto) VALUES (P_DNI_Cliente, IFNULL(P_Nombre_Cliente, 'Cliente Sin Nombre'));
+            SET v_ID_Cliente = LAST_INSERT_ID();
+        END IF;
+    ELSE
+        SET v_ID_Cliente = NULL;
+    END IF;
+
+    INSERT INTO Venta (ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante, Tipo_Venta, Metodo_Pago) 
+    VALUES (P_ID_Usuario, v_ID_Cliente, NOW(), 0.00, P_Tipo_Comprobante, P_Tipo_Venta, P_Metodo_Pago);
+    
+    SET v_ID_Venta = LAST_INSERT_ID();
+    
+    COMMIT;
+    SELECT 'OK' AS Estado, 'Venta registrada' AS Mensaje, v_ID_Venta AS ID_Venta_Generado;
+END //
+DELIMITER ;
+
+
