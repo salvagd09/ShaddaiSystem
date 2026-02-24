@@ -112,8 +112,8 @@ BEGIN
     v.ID_Venta as ID_Venta,
     v.Fecha as Fecha,
     (SELECT COUNT(*) FROM Venta v2 WHERE v2.ID_Cliente=c.ID_Cliente 
-    AND MONTH(v.Fecha)=MONTH(CURDATE())
-    AND YEAR(v.Fecha)=YEAR(CURDATE())) AS Total_Compras_Mes
+    AND MONTH(v2.Fecha)=MONTH(CURDATE())
+    AND YEAR(v2.Fecha)=YEAR(CURDATE())) AS Total_Compras_Mes
     FROM Venta v
     JOIN Cliente c ON v.ID_Cliente=c.ID_Cliente
     WHERE ((P_DNI IS NOT NULL AND c.DNI = P_DNI) OR (P_RUC IS NOT NULL AND c.RUC = P_RUC))
