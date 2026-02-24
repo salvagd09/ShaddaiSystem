@@ -14,14 +14,14 @@ BEGIN
 	ELSE
 		IF P_Tipo_Cliente="Persona" THEN
 			Select ID_Cliente INTO v_ID_Cliente
-			FROM Cliente WHERE DNI=P_DNI;
+			FROM Cliente WHERE DNI=P_DNI LIMIT 1;
 		ELSE
 			Select ID_Cliente INTO v_ID_Cliente
-			FROM Cliente WHERE RUC=P_RUC;
+			FROM Cliente WHERE RUC=P_RUC LIMIT 1;
 		END IF;
 		  IF v_ID_Cliente IS NULL THEN
 			INSERT INTO Cliente(DNI, NombreCompleto, Estado, RUC, Tipo_Cliente) 
-			VALUES (P_DNI, P_NombreCompleto, 'No_Frecuente', P_RUC, P_Tipo_Cliente);
+			VALUES (P_DNI, P_NombreCompleto, 'No Frecuente', P_RUC, P_Tipo_Cliente);
 			SET V_ID_Cliente = LAST_INSERT_ID();
 		  END IF;
 		  INSERT INTO Pedido(ID_Cliente,Estado,Fecha) VALUES(v_ID_Cliente,"Pendiente",NOW());
@@ -45,19 +45,14 @@ END //
 DELIMITER ; 
 DELIMITER //
 /*Sirve para poder insertar IDs de pedidos pendientes del cliente al que le pertenece el DNI colocado*/
+DROP PROCEDURE IF EXISTS Obtener_ID_Pedidos_Pendiente //
+
 CREATE PROCEDURE Obtener_ID_Pedidos_Pendiente(IN P_DNI VARCHAR(8))
 BEGIN
-	DECLARE v_ID_Cliente INT;
-    Select ID_Cliente INTO v_ID_Cliente FROM Cliente
-    WHERE DNI=P_DNI;
-    START TRANSACTION;
-    IF v_ID_Cliente IS NULL THEN
-		Select 'Error' AS Estado, 'Este cliente no tiene ningún pedido' AS Mensaje;
-	ELSE
-		Select ID_Pedido FROM Pedido WHERE ID_Cliente=v_ID_Cliente AND Estado="Pendiente";
-        COMMIT;
-        Select 'OK' AS Estado, 'Pedidos pendientes de este cliente' AS Mensaje;
-	END IF;
+    SELECT p.ID_Pedido 
+    FROM Pedido p
+    INNER JOIN Cliente c ON p.ID_Cliente = c.ID_Cliente
+    WHERE c.DNI = P_DNI AND p.Estado = 'Pendiente';
 END //
 DELIMITER ;
 DELIMITER //
