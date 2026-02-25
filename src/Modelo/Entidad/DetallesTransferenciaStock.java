@@ -6,9 +6,13 @@ public class DetallesTransferenciaStock {
    private int IDTransferencia;
    private int IDProducto;
    private int Cantidad;
-
+   private double SubtotalStock;
     public int getIDDetalleTrans() {
         return IDDetalleTrans;
+    }
+
+    public double getSubtotalStock() {
+        return SubtotalStock;
     }
 
     public void setIDDetalleTrans(int IDDetalleTrans) {

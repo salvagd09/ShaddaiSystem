@@ -6,7 +6,6 @@
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Login.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Ventana_Principal_Vendedor.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Ventana_Principal_Administrador.java</file>
-            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Registrar_Ventas.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Notificaciones.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Confirmar_Pedidos.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/Area_Generar_Reporte.java</file>
@@ -62,6 +61,10 @@
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/CategoriaDAO.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/MostrarDatosClienteDTO.java</file>
             <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DAO/TransferenciaDAO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/LoginResultDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Vista/ModuloVentas.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/NotificacionDTO.java</file>
+            <file>file:/C:/Users/Usuario/Desktop/utp6/Análisis%20y%20diseño/ShaddaiSystem/src/Modelo/DTO/ProductosBajoStockDTO.java</file>
         </group>
     </open-files>
 </project-private>

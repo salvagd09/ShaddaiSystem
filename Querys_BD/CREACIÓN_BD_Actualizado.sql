@@ -39,6 +39,7 @@ ALTER TABLE Cliente ADD COLUMN Tipo_Cliente ENUM("Persona","Empresa");
 ALTER TABLE Usuarios ADD COLUMN username VARCHAR(200) UNIQUE;
 ALTER TABLE Usuarios ADD CONSTRAINT UNIQUE(Contrasena);
 ALTER TABLE Venta MODIFY Tipo_Comprobante enum("Boleta","Factura");
+ALTER TABLE Detalles_TransferenciaTienda ADD COLUMN Subtotal_Stock DECIMAL(10,2);
 /*Procedimientos para registrar una transferencia de tipo CU05 así como sus detalles*/
 DELIMITER //
 CREATE PROCEDURE Registrar_Transferencia 
@@ -49,9 +50,9 @@ SET P_ID_GENERADO=LAST_INSERT_ID();
 END //
 DELIMITER ;
 DELIMITER //
-CREATE PROCEDURE Registrar_Detalle_Transferencia(IN P_ID_Transferencia INT,IN P_ID_Producto INT,IN P_Cantidad INT)
+CREATE PROCEDURE Registrar_Detalle_Transferencia(IN P_ID_Transferencia INT,IN P_ID_Producto INT,IN P_Cantidad INT,IN P_Subtotal DECIMAL(10,2))
 BEGIN
-	INSERT INTO Detalles_TransferenciaTienda(ID_Transferencia,ID_Producto,Cantidad) VALUES (P_ID_Transferencia,P_ID_Producto,P_Cantidad);
+	INSERT INTO Detalles_TransferenciaTienda(ID_Transferencia,ID_Producto,Cantidad,Subtotal_Stock) VALUES (P_ID_Transferencia,P_ID_Producto,P_Cantidad,P_Subtotal);
     UPDATE Producto
     SET Stock_Tienda=Stock_Tienda+P_Cantidad,
 	Stock_Almacen=Stock_Almacen-P_Cantidad
@@ -66,10 +67,12 @@ CREATE PROCEDURE Validar_Cantidad_Trasladar(
     IN P_Cantidad INT
 )
 BEGIN
+	DECLARE v_ID_Producto INT;
     DECLARE v_stock_actualAlmacen INT;
     DECLARE v_Nombre VARCHAR(200);
     DECLARE v_Unidad_Medida VARCHAR(50);
-    SELECT Stock_Almacen,Nombre,Unidad_Medida INTO v_stock_actualAlmacen,v_Nombre,v_Unidad_Medida 
+    DECLARE v_Precio DOUBLE(10,2);
+    SELECT ID_Producto,Stock_Almacen,Nombre,Unidad_Medida,Precio INTO v_ID_Producto,v_stock_actualAlmacen,v_Nombre,v_Unidad_Medida,v_Precio 
     FROM Producto
     WHERE Nombre = P_Nombre_Producto;
     IF P_Cantidad <= 0 OR P_Cantidad > v_stock_actualAlmacen THEN
@@ -78,9 +81,11 @@ BEGIN
     ELSE
         SELECT 'OK' AS Estado,
         'Cantidad valida para traslado' AS Mensaje,
+        v_ID_Producto as ID_Producto,
         v_Nombre as Nombre,
         P_Cantidad as Cantidad,
-        v_Unidad_Medida as `Unidad de Medida`;
+        v_Unidad_Medida as `Unidad de Medida`,
+        (v_Precio*P_Cantidad) as Subtotal;
     END IF;
 END //
 DELIMITER ;

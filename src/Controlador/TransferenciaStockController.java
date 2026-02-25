@@ -4,13 +4,14 @@
  */
 package Controlador;
 
+import Modelo.Conexion.dbConexion;
 import Modelo.DAO.ProductoDAO;
 import Modelo.DAO.TransferenciaDAO;
 import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.DTO.ValidarCantidadAlmacenDTO;
 import java.util.List;
+import java.sql.*;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  *
@@ -23,35 +24,44 @@ public class TransferenciaStockController {
         this.productoDAO = new ProductoDAO();
         this.transferenciaDAO=new TransferenciaDAO();
     }
-    public ResultadoOperacionDTO registrarTransferenciaCompleta(int idUsuario,Map<Integer,Integer> productosYCantidades){
-        /*En caso no hay producto alguno ingresado*/
-        if(productosYCantidades==null || productosYCantidades.isEmpty()){
-            return new ResultadoOperacionDTO("Error","Debe ingresar al menos 1 producto");
-        }
-        int idTransferencia=transferenciaDAO.RegistrarTransferencia(idUsuario);
-        /*Representa el catch del método RegistrarTransferencia*/
-        if(idTransferencia==-1){
-            return new ResultadoOperacionDTO("Error","No se pudo realizar la transferencia");
-        }
-        /*Ayuda a registrar transferencia de varios productos*/
-        for(Map.Entry<Integer,Integer> productoYCantidad:productosYCantidades.entrySet()){
-            int idProducto =productoYCantidad.getKey();
-            int cantidad = productoYCantidad.getValue();
-               boolean exito = transferenciaDAO.RegistrarDetalleTransferencia(
-                idTransferencia,
-                idProducto,
-                cantidad
-            );
-            /*En caso haya un error al registrar la transferencia de 1 producto en específico*/
-            if(!exito){
-                   return new ResultadoOperacionDTO("Error", 
-                    "Error al agregar producto ID: " + idProducto);
+    public ResultadoOperacionDTO registrarTransferenciaCompleta(int idUsuario, Map<Integer, double[]> productosYDatos) {
+    if (productosYDatos == null || productosYDatos.isEmpty()) {
+        return new ResultadoOperacionDTO("Error", "Debe ingresar al menos 1 producto");
+    }
+    try (Connection conn = new dbConexion().conectar()) {
+        conn.setAutoCommit(false); // Inicia transacción
+        try {
+            int idTransferencia = transferenciaDAO.RegistrarTransferencia(conn, idUsuario);
+            if (idTransferencia == -1) {
+                conn.rollback();
+                return new ResultadoOperacionDTO("Error", "No se pudo realizar la transferencia");
             }
+            for (Map.Entry<Integer, double[]> entry : productosYDatos.entrySet()) {
+                int idProducto = entry.getKey();
+                int cantidad = (int) entry.getValue()[0];
+                double subtotal = entry.getValue()[1]; 
+
+                boolean exito = transferenciaDAO.RegistrarDetalleTransferencia(
+                    conn, idTransferencia, idProducto, cantidad, subtotal
+                );
+
+                if (!exito) {
+                    conn.rollback(); 
+                    return new ResultadoOperacionDTO("Error", "Error al agregar producto ID: " + idProducto);
+                }
+            }
+            conn.commit(); 
+            return new ResultadoOperacionDTO("OK",
+                "Transferencia #" + idTransferencia + " registrada con "
+                + productosYDatos.size() + " productos");
+        } catch (Exception e) {
+            conn.rollback();
+            return new ResultadoOperacionDTO("Error", "Error inesperado: " + e.getMessage());
         }
-        /*En caso de que todos los productos hayan podido ser registrados*/
-        return new ResultadoOperacionDTO("OK", 
-            "Transferencia #" + idTransferencia + " registrada con " 
-            + productosYCantidades.size() + " productos");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResultadoOperacionDTO("Error", "Error de conexión");
+        }
     }
     public ValidarCantidadAlmacenDTO ValidarCantidadTrasladar(String nombreProducto,int Cantidad){
         return productoDAO.ValidarCantidadProductoAlmacen(nombreProducto, Cantidad);

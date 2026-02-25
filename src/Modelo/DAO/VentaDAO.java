@@ -88,12 +88,12 @@ public class VentaDAO {
         }
         return reporte;
     }
-    public int RegistrarVenta(Cliente cliente,int idUsuario,TipoVenta tVenta,TipoComprobante tComprobante,
+    public int RegistrarVenta(Connection conn,Cliente cliente,int idUsuario,TipoVenta tVenta,TipoComprobante tComprobante,
     MetodoPago mPago,int idPedido,double Total){
         String sql="{CALL Registrar_Venta_General(?,?,?,?,?,?,?,?,?,?)}";
         int idVentaGenerada=0;
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        try {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setInt(1,idPedido);
             stmt.setInt(2, idUsuario);
             stmt.setString(3,cliente.getDNI());
@@ -120,11 +120,12 @@ public class VentaDAO {
         }
         return idVentaGenerada;
     }
-    public String RegistrarDetalleVenta(int idVentaGenerada,String nombreProducto,int Cantidad){
+    public String RegistrarDetalleVenta(Connection conn,int idVentaGenerada,String nombreProducto,int Cantidad){
         String sql="{CALL Registrar_Detalle_Venta(?,?,?)}";
         String mensajeFinal="";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        try 
+        {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setInt(1,idVentaGenerada);
             stmt.setString(2,nombreProducto);
             stmt.setInt(3, Cantidad);

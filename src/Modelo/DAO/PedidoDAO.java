@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 public class PedidoDAO {
-    public RegistrarPedidoPendienteDTO AgregarPedidoPendiente(Cliente cliente,EstadoPedido tipoP){
+    public RegistrarPedidoPendienteDTO AgregarPedidoPendiente(Connection conn,Cliente cliente,EstadoPedido tipoP){
        dbConexion dbc=new dbConexion();
        Connection con = dbc.conectar();
        String sql="{CALL SP_Pedido_Pendiente(?,?,?,?,?)";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        try {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setString(1, tipoP.name());
             stmt.setString(2,cliente.getTipoCliente().name());
             stmt.setString(3, cliente.getDNI());
@@ -45,10 +45,10 @@ public class PedidoDAO {
         }
         return new RegistrarPedidoPendienteDTO("Error","No se pudo obtener respuesta del servidor.",-1);
     };
-    public boolean AgregarDetallesPedidoPendiente(int idPedido,String nombreProducto,int Cantidad){
+    public boolean AgregarDetallesPedidoPendiente(Connection conn,int idPedido,String nombreProducto,int Cantidad){
         String sql="{CALL SP_Pedido_Pendiente_Detalles(?,?,?)}";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        try {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setInt(1,idPedido);
             stmt.setString(2,nombreProducto);
             stmt.setInt(3, Cantidad);

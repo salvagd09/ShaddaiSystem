@@ -15,11 +15,11 @@ import java.sql.SQLException;
  * @author Usuario
  */
 public class TransferenciaDAO {
-    public int RegistrarTransferencia(int idUsuario){
+    public int RegistrarTransferencia(Connection conn,int idUsuario){
         String sql="{CALL Registrar_Transferencia (?)}";
         int idTransferencia=0;
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        try {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setInt(1,idUsuario);
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){
@@ -31,13 +31,15 @@ public class TransferenciaDAO {
         }
         return idTransferencia;
     }
-    public boolean RegistrarDetalleTransferencia(int idTransferencia,int idProducto,int Cantidad){
-        String sql="{CALL Registrar_Detalle_Transferencia(?,?,?)}";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+    public boolean RegistrarDetalleTransferencia(Connection conn,int idTransferencia,int idProducto,int Cantidad,double Subtotal){
+        String sql="{CALL Registrar_Detalle_Transferencia(?,?,?,?)}";
+        try 
+        {
+            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
             stmt.setInt(1,idTransferencia);
             stmt.setInt(2,idProducto);
             stmt.setInt(3, Cantidad);
+            stmt.setDouble(4, Subtotal);
             stmt.execute();
             return true;
         }catch(SQLException e){

@@ -4,6 +4,18 @@
  */
 package Vista;
 
+
+import Controlador.TransferenciaStockController;
+import Modelo.DTO.ResultadoOperacionDTO;
+import Modelo.DTO.ValidarCantidadAlmacenDTO;
+import java.awt.event.KeyEvent;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -12,11 +24,13 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Area_Registrar_Transferencias.class.getName());
     private int idUsuario;
+    private TransferenciaStockController transferencia;
     public Area_Registrar_Transferencias(int idUsuario) {
         initComponents();
         this.idUsuario=idUsuario;
         setLocationRelativeTo(null);
         setTitle("Área para registrar transferencia de stock");
+        LlenarComboBoxProductos();
     }
 
     /**
@@ -28,64 +42,203 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        NombreProductoCB = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cantidadTrasladoSpinner = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TablaProductos = new javax.swing.JTable();
+        RealizarTrasladoBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(255, 153, 0));
+        jPanel2.setBackground(new java.awt.Color(255, 51, 51));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Área de transferencia de stock a almacén");
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook", 0, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Área de transferencia de stock a tienda");
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Cantidad a Trasladar:");
+
+        NombreProductoCB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        NombreProductoCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Nombre del Producto:");
+
+        cantidadTrasladoSpinner.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cantidadTrasladoSpinner.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cantidadTrasladoSpinnerKeyPressed(evt);
+            }
+        });
+
+        TablaProductos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TablaProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID_Producto", "Nombre", "Cantidad", "Unidad de Medida", "Subtotal en Stock"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(TablaProductos);
+
+        RealizarTrasladoBtn.setText("Realizar Traslado");
+        RealizarTrasladoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        RealizarTrasladoBtn.addActionListener(this::RealizarTrasladoBtnActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(156, 156, 156)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(367, 367, 367)
+                        .addComponent(RealizarTrasladoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(233, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(27, 27, 27)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(740, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(347, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(RealizarTrasladoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(62, 62, 62)
+                    .addComponent(jLabel3)
+                    .addContainerGap(674, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void RealizarTrasladoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizarTrasladoBtnActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) TablaProductos.getModel();
+        int productos=modelo.getRowCount();
+        if(productos==0){
+            JOptionPane.showMessageDialog(null, "No hay ningún producto por registrar");
+            return;
+        }
+        Map<Integer,double[]> productosYDatos=new LinkedHashMap<>();
+        for(int i=0;i<productos;i++){
+            int idProducto=(int) modelo.getValueAt(i,0);
+            int cantidad=(int) modelo.getValueAt(i,2);
+            double subtotal=(double) modelo.getValueAt(i,3);
+            productosYDatos.put(idProducto, new double[]{cantidad,subtotal});
+        }
+         ResultadoOperacionDTO resultado = transferencia.registrarTransferenciaCompleta(idUsuario, productosYDatos);
+         if ("OK".equals(resultado.getEstado())) {
+            JOptionPane.showMessageDialog(null, resultado.getMensaje());
+            modelo.setRowCount(0); 
+         } else {
+                JOptionPane.showMessageDialog(null, resultado.getMensaje());
+         }
+    }//GEN-LAST:event_RealizarTrasladoBtnActionPerformed
+    private void LlenarComboBoxProductos(){
+        NombreProductoCB.removeAllItems();
+        List<String> productos=transferencia.ObtenerNombresProductos();
+        for(String producto:productos){
+            NombreProductoCB.addItem(producto);
+        }
+    }
+    private void cantidadTrasladoSpinnerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidadTrasladoSpinnerKeyPressed
+        DefaultTableModel modelo = (DefaultTableModel) TablaProductos.getModel();
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            String nombreProducto=NombreProductoCB.getSelectedItem().toString();
+            int cantidad=(int) cantidadTrasladoSpinner.getValue();
+            ValidarCantidadAlmacenDTO resultado=transferencia.ValidarCantidadTrasladar(nombreProducto, cantidad);
+            if(resultado.esExitoso()){
+                modelo.addRow(new Object[]{
+                    resultado.getIDProducto(),
+                    resultado.getNombre(),
+                    resultado.getCantidad(),
+                    resultado.getUnidadMedida(),
+                    resultado.getSubtotalStock()
+                });
+            }
+            else {
+                JOptionPane.showMessageDialog(null, resultado.getMensaje());
+            }
+        }
+    }//GEN-LAST:event_cantidadTrasladoSpinnerKeyPressed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> NombreProductoCB;
+    private javax.swing.JButton RealizarTrasladoBtn;
+    private javax.swing.JTable TablaProductos;
+    private javax.swing.JSpinner cantidadTrasladoSpinner;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
