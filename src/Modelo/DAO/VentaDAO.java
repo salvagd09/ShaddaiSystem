@@ -94,7 +94,11 @@ public class VentaDAO {
         int idVentaGenerada=0;
         try {
             CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
-            stmt.setInt(1,idPedido);
+            if (idPedido > 0) {
+                stmt.setInt(1, idPedido);
+            } else {
+                stmt.setNull(1, Types.INTEGER); 
+            }
             stmt.setInt(2, idUsuario);
             stmt.setString(3,cliente.getDNI());
             if(cliente.getRUC()!=null && !cliente.getRUC().isEmpty()){
@@ -116,7 +120,7 @@ public class VentaDAO {
         }
         catch(SQLException e){
             e.printStackTrace();
-            throw new Error("Error en BD: "+e.getMessage());
+            return -1;
         }
         return idVentaGenerada;
     }

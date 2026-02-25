@@ -36,10 +36,8 @@ BEGIN
     DECLARE v_id_cliente INT DEFAULT NULL;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        ROLLBACK;
-        SELECT 'Error en la transacción' AS Error;
+        SELECT 'Error en la transacción' AS Mensaje;
     END;
-    START TRANSACTION;
     IF P_Tipo_Cliente = 'Persona' THEN
         SELECT ID_Cliente INTO v_id_cliente 
         FROM Cliente 
@@ -61,35 +59,30 @@ BEGIN
     IF P_ID_Pedido IS NOT NULL THEN
         UPDATE Pedido SET Estado = 'Finalizado' WHERE ID_Pedido = P_ID_Pedido;
     END IF;
-    COMMIT;
     SELECT LAST_INSERT_ID() AS ID_Venta_Generada;
 END //
 DELIMITER ;
 DELIMITER //
-CREATE PROCEDURE Registrar_Detalle_Venta(IN P_ID_Venta_Generada INT,IN P_Codigo_Producto VARCHAR(50), IN P_Cantidad INT)
+CREATE PROCEDURE Registrar_Detalle_Venta(IN P_ID_Venta_Generada INT,IN P_Nombre_Producto VARCHAR(200), IN P_Cantidad INT)
 BEGIN
 	DECLARE v_id_Producto INT;
     DECLARE v_precioUnitario DECIMAL(10,2);
 	DECLARE v_stock_actualTienda INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        ROLLBACK;
-        SELECT 'Error en la transacción' AS Error;
+        SELECT 'Error en la transacción' AS Mensaje;
     END;
-    START TRANSACTION;
 	SELECT ID_Producto,Precio,Stock_Tienda
     INTO v_id_Producto, v_precioUnitario, v_stock_actualTienda
     FROM Producto
-    WHERE Codigo_Producto = P_Codigo_Producto;
+    WHERE Nombre = P_Nombre_Producto;
     INSERT INTO Detalles_Venta(ID_Venta,ID_Producto,Cantidad,PrecioUnitario) VALUES(P_ID_Venta_Generada,v_id_Producto,P_cantidad,v_precioUnitario);
 	UPDATE Producto 
     SET Stock = Stock - P_Cantidad 
     WHERE ID_Producto = v_id_Producto;
-	COMMIT;
     SELECT 'Detalle registrado correctamente' AS Mensaje;
 END //
 DELIMITER ;
-Select * from Cliente;
 DELIMITER //
 CREATE PROCEDURE Validar_cantidad_y_producto(IN P_Nombre_Producto VARCHAR(200), IN P_Cantidad INT)
 BEGIN

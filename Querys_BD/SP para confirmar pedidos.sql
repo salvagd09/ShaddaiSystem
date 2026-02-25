@@ -6,9 +6,7 @@ IN P_DNI VARCHAR(8),IN P_RUC VARCHAR(11),IN P_NombreCompleto VARCHAR(300))
 BEGIN
 	DECLARE v_ID_Cliente INT;
     DECLARE v_ID_Pedido INT;
-    START TRANSACTION;
     IF P_Tipo_Pedido="Tienda" THEN
-		ROLLBACK;
 			Select 'Error' AS Estado, 'Solo los pedidos por Whatsapp pueden ser Pendientes' as Mensaje,
 			NULL AS ID_Pedido_Generado;
 	ELSE
@@ -26,14 +24,13 @@ BEGIN
 		  END IF;
 		  INSERT INTO Pedido(ID_Cliente,Estado,Fecha) VALUES(v_ID_Cliente,"Pendiente",NOW());
 		  SET v_ID_Pedido= LAST_INSERT_ID();
-          COMMIT;
 		  Select 'OK' as Estado,'Pedido registrado como Pendiente' AS Mensaje,v_ID_Pedido AS ID_Pedido_Generado;
 	END IF;
 END //
 DELIMITER ;
 DELIMITER //
 /*SP para registrar los detalles de los pedidos marcados como pendiente*/
-CREATE PROCEDURE SP_Pedido_Pendiente_Detalles(IN P_ID_Pedido_Generado INT,IN P_Nombre_Producto VARCHAR(50),IN P_Cantidad INT)
+CREATE PROCEDURE SP_Pedido_Pendiente_Detalles(IN P_ID_Pedido_Generado INT,IN P_Nombre_Producto VARCHAR(200),IN P_Cantidad INT)
 BEGIN
 	DECLARE v_ID_Producto INT;
     DECLARE v_Precio_Unitario DECIMAL(10,2);
@@ -45,8 +42,6 @@ END //
 DELIMITER ; 
 DELIMITER //
 /*Sirve para poder insertar IDs de pedidos pendientes del cliente al que le pertenece el DNI colocado*/
-DROP PROCEDURE IF EXISTS Obtener_ID_Pedidos_Pendiente //
-
 CREATE PROCEDURE Obtener_ID_Pedidos_Pendiente(IN P_DNI VARCHAR(8))
 BEGIN
     SELECT p.ID_Pedido 
