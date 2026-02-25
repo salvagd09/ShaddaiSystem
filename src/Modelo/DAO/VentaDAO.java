@@ -7,14 +7,16 @@ package Modelo.DAO;
 import Modelo.Conexion.dbConexion;
 import Modelo.DTO.DatosParaClienteFrecuenteDTO;
 import Modelo.DTO.ReporteVentasDTO;
+import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.DTO.VentaCategoriaDTO;
 import Modelo.DTO.VentaProductosDTO;
 import Modelo.DTO.VentasVendedorDTO;
 import Modelo.Entidad.Cliente;
+import Modelo.Entidad.DetalleVenta;
 import Modelo.Enum.MetodoPago;
 import Modelo.Enum.TipoComprobante;
 import Modelo.Enum.TipoVenta;
-import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +31,7 @@ public class VentaDAO {
         String sql="{CALL SP_Generar_Reporte_Ventas(?,?,?)}";
         ReporteVentasDTO reporte = new ReporteVentasDTO();
         try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        CallableStatement stmt =  conn.prepareCall(sql)){
             if (nombreCategoria != null && !nombreCategoria.isEmpty()) {
                 stmt.setString(1, nombreCategoria);
             } else {
@@ -88,17 +90,13 @@ public class VentaDAO {
         }
         return reporte;
     }
-    public int RegistrarVenta(Connection conn,Cliente cliente,int idUsuario,TipoVenta tVenta,TipoComprobante tComprobante,
+    public int RegistrarVenta(Cliente cliente,int idUsuario,TipoVenta tVenta,TipoComprobante tComprobante,
     MetodoPago mPago,int idPedido,double Total){
         String sql="{CALL Registrar_Venta_General(?,?,?,?,?,?,?,?,?,?)}";
         int idVentaGenerada=0;
-        try {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
-            if (idPedido > 0) {
-                stmt.setInt(1, idPedido);
-            } else {
-                stmt.setNull(1, Types.INTEGER); 
-            }
+        try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt =  conn.prepareCall(sql)){
+            stmt.setInt(1,idPedido);
             stmt.setInt(2, idUsuario);
             stmt.setString(3,cliente.getDNI());
             if(cliente.getRUC()!=null && !cliente.getRUC().isEmpty()){
@@ -120,16 +118,15 @@ public class VentaDAO {
         }
         catch(SQLException e){
             e.printStackTrace();
-            return -1;
+            throw new Error("Error en BD: "+e.getMessage());
         }
         return idVentaGenerada;
     }
-    public String RegistrarDetalleVenta(Connection conn,int idVentaGenerada,String nombreProducto,int Cantidad){
+    public String RegistrarDetalleVenta(int idVentaGenerada,String nombreProducto,int Cantidad){
         String sql="{CALL Registrar_Detalle_Venta(?,?,?)}";
         String mensajeFinal="";
-        try 
-        {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
+        try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt =  conn.prepareCall(sql)){
             stmt.setInt(1,idVentaGenerada);
             stmt.setString(2,nombreProducto);
             stmt.setInt(3, Cantidad);
@@ -145,12 +142,11 @@ public class VentaDAO {
         }
         return mensajeFinal;
     }
-    /*En la BD es Contabilizar_Compras_Mes pero en si representa las ventas que ha
-    hecho un cliente en especifico*/ 
+
     public DatosParaClienteFrecuenteDTO ContabilizarVentasMes(String DNI,String RUC){
         String sql="{CALL Contabilizar_Compras_Mes(?,?)}";
         try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        CallableStatement stmt =  conn.prepareCall(sql)){
             if(DNI!= null && !RUC.isEmpty()){
                 stmt.setString(1, DNI);
             }
@@ -174,5 +170,115 @@ public class VentaDAO {
             return new DatosParaClienteFrecuenteDTO("Error en la BD:"+e.getMessage());
         }
         return new DatosParaClienteFrecuenteDTO("Error en el servidor");
+    }
+    
+    // CU01
+    // Valida si la cantidad vendida esta disponible.
+    public ResultadoOperacionDTO validarStockTienda(String codigoProducto, int cantidad) {
+        ResultadoOperacionDTO resultado = new ResultadoOperacionDTO();
+        String sql = "{CALL Validar_Cantidad_Tienda(?, ?)}";
+
+        try (Connection conn = new dbConexion().conectar();
+             CallableStatement stmt =  conn.prepareCall(sql)) {
+
+            stmt.setString(1, codigoProducto);
+            stmt.setInt(2, cantidad);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    resultado.setEstado(rs.getString("Estado"));
+                    resultado.setMensaje(rs.getString("Mensaje"));
+                    if ("OK".equals(resultado.getEstado())) {
+                        resultado.setNombreProducto(rs.getString("Nombre"));
+                        resultado.setPrecio(rs.getDouble("Precio_Unitario"));
+                        resultado.setSubtotal(rs.getDouble("Subtotal"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            resultado.setEstado("Error");
+            resultado.setMensaje("Error en BD: " + e.getMessage());
+        }
+        return resultado;
+    }
+
+    // CU01
+    // Finalizar Venta 
+    public boolean registrarVentaCompleta(String tipoVenta, int idUsuario, String tipoCliente, String dniCliente, String rucCliente, String nombreCliente, 
+                                          String tipoComprobante, String metodoPago, 
+                                          List<DetalleVenta> carrito) {
+        Connection conn = null;
+        boolean exito = false;
+        
+        String sqlCabecera = "{CALL Registrar_Venta(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sqlDetalle = "{CALL Registrar_DetallesVenta(?, ?, ?)}";
+
+        try {
+            conn = new dbConexion().conectar();
+            conn.setAutoCommit(false); 
+            int idVentaGenerado = -1;
+            try (CallableStatement stmtCabecera =  conn.prepareCall(sqlCabecera)) {
+                stmtCabecera.setString(1, tipoVenta);
+                stmtCabecera.setInt(2, idUsuario);
+                stmtCabecera.setString(3, tipoCliente);
+                
+                if (dniCliente == null || dniCliente.trim().isEmpty()) {
+                    stmtCabecera.setNull(4, java.sql.Types.VARCHAR);
+                } else {
+                    stmtCabecera.setString(4, dniCliente);
+                }
+                
+                if (rucCliente == null || rucCliente.trim().isEmpty()) {
+                    stmtCabecera.setNull(5, java.sql.Types.VARCHAR);
+                } else {
+                    stmtCabecera.setString(5, rucCliente);
+                }
+                
+                stmtCabecera.setString(6, (nombreCliente == null || nombreCliente.trim().isEmpty()) ? null : nombreCliente);
+                
+                stmtCabecera.setString(7, tipoComprobante);
+                stmtCabecera.setString(8, metodoPago);
+
+                try (ResultSet rs = stmtCabecera.executeQuery()) {
+                    if (rs.next() && "OK".equals(rs.getString("Estado"))) {
+                        idVentaGenerado = rs.getInt("ID_Venta_Generado");
+                    } else {
+                        conn.rollback();
+                        return false; 
+                    }
+                }
+            }
+
+            if (idVentaGenerado != -1) {
+                try (CallableStatement stmtDetalle = (CallableStatement) conn.prepareCall(sqlDetalle)) {
+                    for (DetalleVenta detalle : carrito) {
+                        stmtDetalle.setInt(1, idVentaGenerado);
+                        stmtDetalle.setString(2, detalle.getCodigoProductoTemp()); 
+                        stmtDetalle.setInt(3, detalle.getCantidad());
+                        stmtDetalle.execute();
+                    }
+                }
+                
+                conn.commit();
+                exito = true;
+            }
+        } catch (SQLException e) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return exito;
     }
 }

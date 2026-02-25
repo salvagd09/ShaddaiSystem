@@ -8,21 +8,23 @@ import Modelo.DTO.RegistrarPedidoPendienteDTO;
 import Modelo.DTO.ResultadoIDPedidosDTO;
 import Modelo.Entidad.Cliente;
 import Modelo.DTO.ResultadoOperacionDTO;
+import Modelo.Entidad.DetalleVenta;
 import Modelo.Enum.EstadoPedido;
-import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 
 public class PedidoDAO {
-    public RegistrarPedidoPendienteDTO AgregarPedidoPendiente(Connection conn,Cliente cliente,EstadoPedido tipoP){
+    public RegistrarPedidoPendienteDTO AgregarPedidoPendiente(Cliente cliente,EstadoPedido tipoP){
        dbConexion dbc=new dbConexion();
        Connection con = dbc.conectar();
        String sql="{CALL SP_Pedido_Pendiente(?,?,?,?,?)";
-        try {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
+        try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
             stmt.setString(1, tipoP.name());
             stmt.setString(2,cliente.getTipoCliente().name());
             stmt.setString(3, cliente.getDNI());
@@ -45,10 +47,10 @@ public class PedidoDAO {
         }
         return new RegistrarPedidoPendienteDTO("Error","No se pudo obtener respuesta del servidor.",-1);
     };
-    public boolean AgregarDetallesPedidoPendiente(Connection conn,int idPedido,String nombreProducto,int Cantidad){
+    public boolean AgregarDetallesPedidoPendiente(int idPedido,String nombreProducto,int Cantidad){
         String sql="{CALL SP_Pedido_Pendiente_Detalles(?,?,?)}";
-        try {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
+        try (Connection conn = new dbConexion().conectar();
+        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
             stmt.setInt(1,idPedido);
             stmt.setString(2,nombreProducto);
             stmt.setInt(3, Cantidad);
@@ -103,7 +105,6 @@ public class PedidoDAO {
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)) {
             stmt.setString(1, DNI);
-            //Obtener primer ResultRest(IDs)
             ResultSet rs1 = stmt.executeQuery();
             if (rs1.getMetaData().getColumnCount() == 2 && 
                 rs1.getMetaData().getColumnName(1).equals("Estado")) {
@@ -119,7 +120,6 @@ public class PedidoDAO {
                 while (rs1.next()) {
                     ids.add(rs1.getInt("ID_Pedido"));
                 }
-                // Obtener segundo ResultSet (Estado y Mensaje)
                 if (stmt.getMoreResults()) {
                     ResultSet rs2 = stmt.getResultSet();
                     if (rs2.next()) {
@@ -160,7 +160,7 @@ public class PedidoDAO {
        String sql="{CALL Obtener_DatosDP_Pedido_Confirmado(?)}";
        List<DetallesPedidoPendienteDTO> listaDPedidos = new ArrayList<>();
        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        CallableStatement stmt =  conn.prepareCall(sql)){
            stmt.setInt(1, idPedido);
            ResultSet rs=stmt.executeQuery();
            while(rs.next()){
@@ -176,22 +176,11 @@ public class PedidoDAO {
        }
        return listaDPedidos;
     }
-    public boolean ConfirmarPedido(int idPedido){
-        String sql="{CALL Confirmar_Pedido(?)}";
-        try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
-            stmt.setInt(1,idPedido);
-            stmt.execute();
-            return true;
-        }catch(SQLException e){
-            e.printStackTrace();
-            return false;
-        }
-    }
+    
     public ResultadoOperacionDTO ActualizarDetallesPPedidoPendiente(int idPedido,String nombreProducto,int cantidadNueva){
         String sql = "{CALL Actualizar_DP_Pedido_Pendiente(?, ?, ?)}";
     try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)) {
+        CallableStatement stmt =  conn.prepareCall(sql)) {
         stmt.setInt(1, idPedido);
         stmt.setString(2, nombreProducto);
         stmt.setInt(3, cantidadNueva);
@@ -206,5 +195,222 @@ public class PedidoDAO {
         return new ResultadoOperacionDTO("Error", "Error en la base de datos: " + e.getMessage());
     }
     return new ResultadoOperacionDTO("Error", "No se pudo obtener respuesta del servidor");
+    }
+    
+    // CU01
+    public boolean registrarPedidoPendienteWhatsapp(String tipoCliente, String dni, String ruc, String nombreCompleto, List<DetalleVenta> carrito) {
+        Connection conn = null;
+        boolean exito = false;
+        
+        String sqlCabecera = "{CALL SP_Pedido_Pendiente(?, ?, ?, ?, ?)}";
+        String sqlDetalle = "{CALL SP_Pedido_Pendiente_Detalles(?, ?, ?)}";
+
+        try {
+            conn = new dbConexion().conectar();
+            conn.setAutoCommit(false); 
+            int idPedidoGenerado = -1;
+
+            try (CallableStatement stmtCabecera =  conn.prepareCall(sqlCabecera)) {
+                stmtCabecera.setString(1, "Whatsapp");
+                stmtCabecera.setString(2, tipoCliente);
+                
+                stmtCabecera.setString(3, (dni != null && !dni.isEmpty()) ? dni : null);
+                stmtCabecera.setString(4, (ruc != null && !ruc.isEmpty()) ? ruc : null);
+                stmtCabecera.setString(5, nombreCompleto);
+
+                try (ResultSet rs = stmtCabecera.executeQuery()) {
+                    if (rs.next() && "OK".equals(rs.getString("Estado"))) {
+                        idPedidoGenerado = rs.getInt("ID_Pedido_Generado");
+                    } else {
+                        conn.rollback();
+                        return false; 
+                    }
+                }
+            }
+
+            if (idPedidoGenerado != -1) {
+                try (CallableStatement stmtDetalle =  conn.prepareCall(sqlDetalle)) {
+                    for (DetalleVenta detalle : carrito) {
+                        stmtDetalle.setInt(1, idPedidoGenerado);
+                        stmtDetalle.setString(2, detalle.getCodigoProductoTemp());
+                        stmtDetalle.setInt(3, detalle.getCantidad());
+                        stmtDetalle.execute();
+                    }
+                }
+                
+                conn.commit();
+                exito = true;
+            }
+
+        } catch (SQLException e) {
+            try { if (conn != null) conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            e.printStackTrace();
+        } 
+        return exito;
+    }
+    
+    // CU02
+    public DefaultTableModel obtenerIDsPedidosPendiente(String dni) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID Pedido Pendiente");
+        
+        String sql = "{CALL Obtener_ID_Pedidos_Pendiente(?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            java.sql.CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setString(1, dni);
+            
+            java.sql.ResultSet rs = stmt.executeQuery(); 
+            
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getInt("ID_Pedido")});
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+        return modelo;
+    }
+    
+    // CU02
+    public String[] obtenerDatosCabecera(int idPedido) {
+        String[] datos = new String[2];
+        String sql = "{CALL Obtener_DatosP_Pedido_Pendiente(?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            CallableStatement stmt =  conn.prepareCall(sql);
+            stmt.setInt(1, idPedido);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                datos[0] = rs.getString("NombreCompleto");
+                datos[1] = rs.getString("Fecha");
+            }
+            conn.close();
+        } catch (Exception e) { e.printStackTrace(); }
+        return datos;
+    }
+
+    // CU02
+    public DefaultTableModel obtenerDetallesPedido(int idPedido) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Producto");
+        modelo.addColumn("Cantidad Solicitada");
+        modelo.addColumn("Stock Actual");
+        modelo.addColumn("Disponible");
+
+        String sql = "{CALL Obtener_DatosDP_Pedido_Pendiente(?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setInt(1, idPedido);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getString("Nombre"),
+                    rs.getInt("cantidad"),
+                    rs.getInt("Stock_Tienda"),
+                    rs.getString("Disponible")
+                });
+            }
+            conn.close();
+        } catch (Exception e) { e.printStackTrace(); }
+        return modelo;
+    }
+
+    //CU02
+    public boolean confirmarPedido(int idPedido, int idUsuario) {
+        boolean exito = false;
+        
+        String sqlObtenerCliente = "SELECT ID_Cliente FROM Pedido WHERE ID_Pedido = ?";
+        String sqlLeerDetalles = "SELECT ID_Producto, cantidad, precioUnitario FROM Detalles_Pedido WHERE ID_Pedido = ?";
+        String sqlDescontarStock = "UPDATE Producto SET Stock_Tienda = Stock_Tienda - ? WHERE ID_Producto = ?";
+        String sqlInsertarVenta = "INSERT INTO Venta (ID_Pedido, ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante,"
+                                    + " Tipo_Venta, Metodo_Pago) VALUES (?, ?, ?, NOW(), ?, 'Boleta', 'Whatsapp', 'Efectivo')";
+        String sqlConfirmar = "UPDATE Pedido SET Estado = 'Confirmado' WHERE ID_Pedido = ?";
+
+        try {
+            Connection conn = new dbConexion().conectar();
+            conn.setAutoCommit(false); 
+
+            int idCliente = 0;
+            double totalVenta = 0.0;
+
+            PreparedStatement pstCliente = conn.prepareStatement(sqlObtenerCliente);
+            pstCliente.setInt(1, idPedido);
+            ResultSet rsCliente = pstCliente.executeQuery();
+            if (rsCliente.next()) {
+                idCliente = rsCliente.getInt("ID_Cliente");
+            }
+            rsCliente.close();
+            pstCliente.close();
+
+            PreparedStatement pstLeer = conn.prepareStatement(sqlLeerDetalles);
+            pstLeer.setInt(1, idPedido);
+            ResultSet rsDetalles = pstLeer.executeQuery();
+
+            PreparedStatement pstDescontar = conn.prepareStatement(sqlDescontarStock);
+            while (rsDetalles.next()) {
+                int idProd = rsDetalles.getInt("ID_Producto");
+                int cant = rsDetalles.getInt("cantidad");
+                double precioU = rsDetalles.getDouble("precioUnitario");
+                
+                totalVenta += (cant * precioU); 
+
+                pstDescontar.setInt(1, cant);
+                pstDescontar.setInt(2, idProd);
+                pstDescontar.executeUpdate();
+            }
+            rsDetalles.close();
+            pstLeer.close();
+            pstDescontar.close();
+
+            PreparedStatement pstVenta = conn.prepareStatement(sqlInsertarVenta);
+            pstVenta.setInt(1, idPedido);
+            pstVenta.setInt(2, idUsuario);
+            if(idCliente > 0) {
+                pstVenta.setInt(3, idCliente);
+            } else {
+                pstVenta.setNull(3, Types.INTEGER);
+            }
+            pstVenta.setDouble(4, totalVenta);
+            pstVenta.executeUpdate();
+            pstVenta.close();
+
+            PreparedStatement pstConfirmar = conn.prepareStatement(sqlConfirmar);
+            pstConfirmar.setInt(1, idPedido);
+            pstConfirmar.executeUpdate();
+            pstConfirmar.close();
+
+            conn.commit();
+            exito = true;
+            conn.close();
+            
+        } catch (Exception e) { 
+            System.out.println("Error al confirmar el pedido y generar la venta: " + e.getMessage());
+            e.printStackTrace(); 
+        }
+        return exito;
+    }
+
+    // CU02
+    public String actualizarCantidadDetalle(int idPedido, String nombreProd, int nuevaCantidad) {
+        String mensaje = "Error desconocido";
+        String sql = "{CALL Actualizar_DP_Pedido_Pendiente(?, ?, ?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setInt(1, idPedido);
+            stmt.setString(2, nombreProd);
+            stmt.setInt(3, nuevaCantidad);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                mensaje = rs.getString("Mensaje"); 
+            }
+            conn.close();
+        } catch (Exception e) { e.printStackTrace(); }
+        return mensaje;
     }
 }

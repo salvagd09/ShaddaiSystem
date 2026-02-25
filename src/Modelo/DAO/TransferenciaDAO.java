@@ -5,7 +5,7 @@
 package Modelo.DAO;
 
 import Modelo.Conexion.dbConexion;
-import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class TransferenciaDAO {
         String sql="{CALL Registrar_Transferencia (?)}";
         int idTransferencia=0;
         try {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
+            CallableStatement stmt =  conn.prepareCall(sql);
             stmt.setInt(1,idUsuario);
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){
@@ -35,7 +35,7 @@ public class TransferenciaDAO {
         String sql="{CALL Registrar_Detalle_Transferencia(?,?,?,?)}";
         try 
         {
-            CallableStatement stmt = (CallableStatement) conn.prepareCall(sql);
+            CallableStatement stmt =  conn.prepareCall(sql);
             stmt.setInt(1,idTransferencia);
             stmt.setInt(2,idProducto);
             stmt.setInt(3, Cantidad);

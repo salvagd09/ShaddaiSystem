@@ -25,5 +25,81 @@ public class Producto {
         this.StockMinimo = StockMinimo;
         this.IDCategoria = IDCategoria;
     }
+
+    public Producto() {
+    }
+
+    public int getIDProducto() {
+        return IDProducto;
+    }
+
+    public void setIDProducto(int IDProducto) {
+        this.IDProducto = IDProducto;
+    }
+
+    public String getCodigoProducto() {
+        return CodigoProducto;
+    }
+
+    public void setCodigoProducto(String CodigoProducto) {
+        this.CodigoProducto = CodigoProducto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getStockTienda() {
+        return StockTienda;
+    }
+
+    public void setStockTienda(int StockTienda) {
+        this.StockTienda = StockTienda;
+    }
+
+    public int getStockAlmacen() {
+        return StockAlmacen;
+    }
+
+    public void setStockAlmacen(int StockAlmacen) {
+        this.StockAlmacen = StockAlmacen;
+    }
+
+    public String getUnidadMedida() {
+        return UnidadMedida;
+    }
+
+    public void setUnidadMedida(String UnidadMedida) {
+        this.UnidadMedida = UnidadMedida;
+    }
+
+    public double getPrecio() {
+        return Precio;
+    }
+
+    public void setPrecio(double Precio) {
+        this.Precio = Precio;
+    }
+
+    public int getStockMinimo() {
+        return StockMinimo;
+    }
+
+    public void setStockMinimo(int StockMinimo) {
+        this.StockMinimo = StockMinimo;
+    }
+
+    public int getIDCategoria() {
+        return IDCategoria;
+    }
+
+    public void setIDCategoria(int IDCategoria) {
+        this.IDCategoria = IDCategoria;
+    }
+    
     
 }

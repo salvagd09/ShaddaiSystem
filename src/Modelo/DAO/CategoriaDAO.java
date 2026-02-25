@@ -5,7 +5,7 @@
 package Modelo.DAO;
 
 import Modelo.Conexion.dbConexion;
-import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class CategoriaDAO {
         String sql="SELECT nombre_Categoria from Categoria";
         List<String> nombresCategoria=new ArrayList<>();
         try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        CallableStatement stmt = conn.prepareCall(sql)){
          ResultSet rs=stmt.executeQuery();
          while(rs.next()){
              nombresCategoria.add(rs.getString("nombre_Categoria"));

@@ -1,11 +1,13 @@
 package Modelo.DAO;
+
 import Modelo.Conexion.dbConexion;
 import Modelo.DTO.MostrarDatosClienteDTO;
 import Modelo.Entidad.Cliente;
 import Modelo.Enum.TipoCliente;
-import com.mysql.cj.jdbc.CallableStatement;
 import java.sql.*;
 import java.sql.Types;
+import javax.swing.table.DefaultTableModel;
+
 public class ClienteDAO {
    public boolean RegistrarloComoFrecuente(Cliente cliente){
        dbConexion dbc=new dbConexion();
@@ -49,4 +51,87 @@ public class ClienteDAO {
         }
        return new MostrarDatosClienteDTO("Error en el servidor");
    }
+   
+   //===========================================================================
+   
+   // CU04
+   public boolean registrarClienteFrecuente(String dni, String ruc, String telefono, String correo, String direccion) {
+        Connection conn = null;
+        boolean exito = false;
+        String sql = "{CALL Registrar_Cliente_Frecuente(?, ?, ?, ?, ?)}";
+        try {
+            conn = new dbConexion().conectar();
+            CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setString(1, (dni != null && !dni.isEmpty()) ? dni : null);
+            stmt.setString(2, (ruc != null && !ruc.isEmpty()) ? ruc : null);
+            stmt.setString(3, telefono);
+            stmt.setString(4, correo);
+            stmt.setString(5, direccion);
+            int filasAfectadas = stmt.executeUpdate();
+            if (filasAfectadas > 0) {
+                exito = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return exito;
+    }
+   
+   // CU04
+   public DefaultTableModel obtenerHistorialCompras(String dni, String ruc) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID Venta");
+        modelo.addColumn("Fecha de Compra");
+        modelo.addColumn("Nombre Cliente"); 
+        String sql = "{CALL Contabilizar_Compras_Mes(?, ?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            java.sql.CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setString(1, (dni != null && !dni.isEmpty()) ? dni : null);
+            stmt.setString(2, (ruc != null && !ruc.isEmpty()) ? ruc : null);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Object[] fila = new Object[3];
+                fila[0] = rs.getInt("ID_Venta");
+                fila[1] = rs.getString("Fecha");
+                fila[2] = rs.getString("Nombre_Cliente");
+                modelo.addRow(fila);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return modelo;
+    }
+   
+    // CU04
+    public int obtenerTotalComprasMes(String dni, String ruc) {
+        int totalCompras = 0;
+        String sql = "{CALL Contabilizar_Compras_Mes(?, ?)}";
+        try {
+            Connection conn = new dbConexion().conectar();
+            java.sql.CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setString(1, (dni != null && !dni.isEmpty()) ? dni : null);
+            stmt.setString(2, (ruc != null && !ruc.isEmpty()) ? ruc : null);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                totalCompras = rs.getInt("Total_Compras_Mes");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalCompras;
+    }
 }
+

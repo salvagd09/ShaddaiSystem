@@ -154,12 +154,12 @@ public class Ventana_Principal_Vendedor extends javax.swing.JFrame {
 
     private void ConfirmarPedidoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarPedidoBtnActionPerformed
         this.dispose();
-        new Area_Confirmar_Pedidos().setVisible(true);
+        new Area_Confirmar_Pedidos(idUsuario).setVisible(true);
     }//GEN-LAST:event_ConfirmarPedidoBtnActionPerformed
 
     private void RegistrarFrecuenteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarFrecuenteBtnActionPerformed
         this.dispose();
-        new Area_Registar_Cliente_Frecuente().setVisible(true);
+        new Area_Registar_Cliente_Frecuente(idUsuario).setVisible(true);
     }//GEN-LAST:event_RegistrarFrecuenteBtnActionPerformed
 
     private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed

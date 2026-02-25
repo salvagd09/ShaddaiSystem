@@ -6,7 +6,7 @@ package Modelo.DAO;
 
 import Modelo.Conexion.dbConexion;
 import Modelo.DTO.LoginResultDTO;
-import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.CallableStatement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class EmpleadoDAO {
         Map<Integer,String> RolEID=new HashMap<>();
         String sql="{CALL Login_Rol(?,?)}";
         try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)) {
+        CallableStatement stmt =  conn.prepareCall(sql)) {
             stmt.setString(1, username);
             stmt.setString(2,password);
             ResultSet rs=stmt.executeQuery();
@@ -40,7 +40,7 @@ public class EmpleadoDAO {
         String sql="{CALL Obtener_Nombres_Vendedor()}";
         List<String> nombresV=new ArrayList<>();
          try (Connection conn = new dbConexion().conectar();
-        CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
+        CallableStatement stmt =  conn.prepareCall(sql)){
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
                 nombresV.add(rs.getString("Vendedor"));

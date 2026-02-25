@@ -5,7 +5,7 @@ VALUES
 ('PROD-001', 'Vasos de Plástico 12oz', 50, 200, 'Paquete', 5.50, 20, 1),
 ('PROD-002', 'Platos Descartables Nro 8', 30, 150, 'Ciento', 8.20, 15, 1),
 ('PROD-003', 'Bolsas de Basura 50x70', 100, 500, 'Millar', 15.00, 50, 2);
-
+DELIMITER //
 CREATE PROCEDURE Validar_Cantidad_Tienda(
     IN P_Codigo_Producto VARCHAR(50),
     IN P_Cantidad INT
@@ -37,7 +37,8 @@ BEGIN
         END IF;
     END IF;
 END //
-
+DELIMITER ;
+DELIMITER //
 CREATE PROCEDURE Registrar_DetallesVenta(
     IN P_ID_Venta INT,
     IN P_Codigo_Producto VARCHAR(50),
@@ -69,13 +70,9 @@ BEGIN
     
     COMMIT;
 END //
-
 DELIMITER ;
-
-
 DELIMITER //
 DROP PROCEDURE IF EXISTS Registrar_Venta //
-
 CREATE PROCEDURE Registrar_Venta(
     IN P_Tipo_Venta ENUM('Tienda', 'Whatsapp'),
     IN P_ID_Usuario INT,

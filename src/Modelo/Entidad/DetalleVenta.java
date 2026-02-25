@@ -14,9 +14,11 @@ public class DetalleVenta {
     private int IDProducto;
     private int Cantidad;
     private double PrecioUnitario;
+    private String codigoProductoTemp;
     public int getIDDetalleVenta() {
         return IDDetalleVenta;
     }
+    
     public void setIDDetalleVenta(int IDDetalleVenta) {
         this.IDDetalleVenta = IDDetalleVenta;
     }
@@ -44,4 +46,13 @@ public class DetalleVenta {
     public void setPrecioUnitario(double PrecioUnitario) {
         this.PrecioUnitario = PrecioUnitario;
     }
+
+    public String getCodigoProductoTemp() {
+        return codigoProductoTemp;
+    }
+
+    public void setCodigoProductoTemp(String codigoProductoTemp) {
+        this.codigoProductoTemp = codigoProductoTemp;
+    }
+    
 }
