@@ -93,7 +93,7 @@ DELIMITER //
 /*Mostrar productos a trasladar*/
 CREATE PROCEDURE Obtener_Nombres_ProductoTraslado()
 BEGIN
-	Select Nombre FROM Productos
+	Select Nombre FROM Producto
     WHERE Stock_Almacen>0
     ORDER BY Nombre;
 END//

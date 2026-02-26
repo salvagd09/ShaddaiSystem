@@ -4,11 +4,11 @@
  */
 package Modelo.DAO;
 
-import Modelo.Conexion.dbConexion;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
@@ -16,15 +16,14 @@ import java.sql.SQLException;
  */
 public class TransferenciaDAO {
     public int RegistrarTransferencia(Connection conn,int idUsuario){
-        String sql="{CALL Registrar_Transferencia (?)}";
+        String sql="{CALL Registrar_Transferencia (?,?)}";
         int idTransferencia=0;
         try {
             CallableStatement stmt =  conn.prepareCall(sql);
             stmt.setInt(1,idUsuario);
-            ResultSet rs=stmt.executeQuery();
-            if(rs.next()){
-                idTransferencia=rs.getInt("P_ID_GENERADO");
-            }
+            stmt.registerOutParameter(2,Types.INTEGER);
+            stmt.execute();
+            idTransferencia=stmt.getInt(2);
         }catch(SQLException e){
             e.printStackTrace();
             return -1;

@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
@@ -163,8 +165,11 @@ public class Ventana_Principal_Vendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_RegistrarFrecuenteBtnActionPerformed
 
     private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed
+        int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer cerrar sesión?","Confirmación de cierre de sesión",JOptionPane.YES_NO_OPTION);
+        if(resultado==0){
           this.dispose();
-         new Login().setVisible(true);
+         new Login().setVisible(true); 
+        }
     }//GEN-LAST:event_CerrarSesionBtnActionPerformed
 
 

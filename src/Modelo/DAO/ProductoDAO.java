@@ -57,7 +57,7 @@ public class ProductoDAO {
                 String estado=rs.getString("Estado");
                 String mensaje=rs.getString("Mensaje");
                 if("OK".equals(estado)){
-                return new ValidarCantidadAlmacenDTO(true,mensaje,rs.getString("Nombre"),rs.getInt("Cantidad"),rs.getString("Unidad de Medida"));
+                return new ValidarCantidadAlmacenDTO(true,mensaje,rs.getInt("ID_Producto"),rs.getString("Nombre"),rs.getInt("Cantidad"),rs.getString("Unidad de Medida"),rs.getDouble("Subtotal"));
                 }else{
                     return new ValidarCantidadAlmacenDTO(mensaje);
                 }
@@ -90,7 +90,7 @@ public class ProductoDAO {
         CallableStatement stmt =  conn.prepareCall(sql)){
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
-                nombresAlmacen.add(rs.getString("Nombres"));
+                nombresAlmacen.add(rs.getString("Nombre"));
             }
         }catch(SQLException e){
             e.printStackTrace();

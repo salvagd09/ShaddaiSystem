@@ -24,7 +24,9 @@ public class ValidarCantidadAlmacenDTO {
         this.UnidadMedida = UnidadMedida;
     }
 
-    public ValidarCantidadAlmacenDTO(int IDProducto, String Nombre, int Cantidad, String UnidadMedida, double SubtotalStock) {
+    public ValidarCantidadAlmacenDTO(boolean Exitoso,String Mensaje,int IDProducto, String Nombre, int Cantidad, String UnidadMedida, double SubtotalStock) {
+        this.Exitoso=Exitoso;
+        this.Mensaje=Mensaje;
         this.IDProducto = IDProducto;
         this.Nombre = Nombre;
         this.Cantidad = Cantidad;

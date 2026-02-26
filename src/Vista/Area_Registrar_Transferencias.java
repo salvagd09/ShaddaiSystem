@@ -8,12 +8,15 @@ package Vista;
 import Controlador.TransferenciaStockController;
 import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.DTO.ValidarCantidadAlmacenDTO;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,9 +31,19 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
     public Area_Registrar_Transferencias(int idUsuario) {
         initComponents();
         this.idUsuario=idUsuario;
+         this.transferencia = new TransferenciaStockController();
         setLocationRelativeTo(null);
         setTitle("Área para registrar transferencia de stock");
         LlenarComboBoxProductos();
+        JTextField spinnerEditor = ((JSpinner.DefaultEditor) cantidadTrasladoSpinner.getEditor()).getTextField();
+        spinnerEditor.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                cantidadTrasladoSpinnerKeyPressed(e); // Llama al método que ya tienes
+            }
+        }
+        });
     }
 
     /**
@@ -51,6 +64,9 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaProductos = new javax.swing.JTable();
         RealizarTrasladoBtn = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        CerrarSesionBtn = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,13 +97,10 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
             }
         });
 
-        TablaProductos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TablaProductos.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         TablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID_Producto", "Nombre", "Cantidad", "Unidad de Medida", "Subtotal en Stock"
@@ -107,6 +120,25 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
         RealizarTrasladoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         RealizarTrasladoBtn.addActionListener(this::RealizarTrasladoBtnActionPerformed);
 
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Siempre tenga en cuenta la unidad de Medida");
+
+        CerrarSesionBtn.setBackground(new java.awt.Color(214, 40, 40));
+        CerrarSesionBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        CerrarSesionBtn.setForeground(new java.awt.Color(255, 255, 255));
+        CerrarSesionBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Log out icon.png"))); // NOI18N
+        CerrarSesionBtn.setText("Cerrar sesión");
+        CerrarSesionBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        CerrarSesionBtn.setVerifyInputWhenFocusTarget(false);
+        CerrarSesionBtn.addActionListener(this::CerrarSesionBtnActionPerformed);
+
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Recuerde presionar Enter para registrar un Producto");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -114,23 +146,32 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(280, 280, 280)
-                        .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(367, 367, 367)
+                        .addComponent(RealizarTrasladoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(367, 367, 367)
-                        .addComponent(RealizarTrasladoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(233, Short.MAX_VALUE))
+                        .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGap(280, 280, 280)
+                            .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGap(200, 200, 200)
+                            .addComponent(jLabel1)))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CerrarSesionBtn)
+                .addGap(14, 14, 14))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 58, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(27, 27, 27)
@@ -140,19 +181,27 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(NombreProductoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(CerrarSesionBtn)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(cantidadTrasladoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(29, 29, 29)
                 .addComponent(RealizarTrasladoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(62, 62, 62)
@@ -189,7 +238,7 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
         for(int i=0;i<productos;i++){
             int idProducto=(int) modelo.getValueAt(i,0);
             int cantidad=(int) modelo.getValueAt(i,2);
-            double subtotal=(double) modelo.getValueAt(i,3);
+            double subtotal=(double) modelo.getValueAt(i,4);
             productosYDatos.put(idProducto, new double[]{cantidad,subtotal});
         }
          ResultadoOperacionDTO resultado = transferencia.registrarTransferenciaCompleta(idUsuario, productosYDatos);
@@ -221,6 +270,7 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
                     resultado.getUnidadMedida(),
                     resultado.getSubtotalStock()
                 });
+                cantidadTrasladoSpinner.setValue(1);
             }
             else {
                 JOptionPane.showMessageDialog(null, resultado.getMensaje());
@@ -228,9 +278,18 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cantidadTrasladoSpinnerKeyPressed
 
+    private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed
+        int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer cerrar sesión?","Confirmación de cierre de sesión",JOptionPane.YES_NO_OPTION);
+        if(resultado==0){
+          this.dispose();
+         new Login().setVisible(true); 
+        }
+    }//GEN-LAST:event_CerrarSesionBtnActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CerrarSesionBtn;
     private javax.swing.JComboBox<String> NombreProductoCB;
     private javax.swing.JButton RealizarTrasladoBtn;
     private javax.swing.JTable TablaProductos;
@@ -238,6 +297,8 @@ public class Area_Registrar_Transferencias extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
