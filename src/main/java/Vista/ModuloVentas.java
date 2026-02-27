@@ -1,6 +1,5 @@
 package Vista;
 
-import javax.swing.JOptionPane;
 
 public class ModuloVentas extends javax.swing.JFrame {
 
@@ -9,11 +8,30 @@ public class ModuloVentas extends javax.swing.JFrame {
     public ModuloVentas(int idUsuario) {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Área para registrar ventas");
         this.idUsuarioLogueado = idUsuario;
         new Controlador.VentaRegistroController(this, idUsuarioLogueado);
-        
     }
-
+    private void elementosDesactivadosTipoCliente(){
+        if(rbPersona.isSelected()){
+            RUCText.setVisible(false);
+            labelRuc.setVisible(false);
+        } else if(rbEmpresa.isSelected()){
+            RUCText.setVisible(true);
+            labelRuc.setVisible(true);
+        }
+    }
+    private void elementosDesactivadosTipoPedido(){
+        if(rbTienda.isSelected()){
+            btnPagoPedidoConfirmado.setVisible(false);
+            btnRegistrarWhatsapp.setVisible(false);
+            btnFinalizarVenta.setVisible(true);
+        } else if(rbWhatsapp.isSelected()){
+             btnPagoPedidoConfirmado.setVisible(true);
+            btnRegistrarWhatsapp.setVisible(true);
+            btnFinalizarVenta.setVisible(false);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,8 +58,8 @@ public class ModuloVentas extends javax.swing.JFrame {
         txtNombreCliente = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtDni = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtRuc = new javax.swing.JTextField();
+        labelRuc = new javax.swing.JLabel();
+        RUCText = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtNombreProducto = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -59,7 +77,7 @@ public class ModuloVentas extends javax.swing.JFrame {
         rbBoleta = new javax.swing.JRadioButton();
         btnFinalizarVenta = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnPagoPedidoConfirmado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,10 +102,20 @@ public class ModuloVentas extends javax.swing.JFrame {
         rbTienda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbTienda.setSelected(true);
         rbTienda.setText("Tienda");
+        rbTienda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTiendaActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rbWhatsapp);
         rbWhatsapp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbWhatsapp.setText("Whatsapp");
+        rbWhatsapp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbWhatsappActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Tipo de Cliente:");
@@ -96,25 +124,40 @@ public class ModuloVentas extends javax.swing.JFrame {
         rbPersona.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbPersona.setSelected(true);
         rbPersona.setText("Persona");
+        rbPersona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbPersonaActionPerformed(evt);
+            }
+        });
 
         buttonGroup2.add(rbEmpresa);
         rbEmpresa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbEmpresa.setText("Empresa");
+        rbEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbEmpresaActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Nombres y Apellidos:");
 
         txtNombreCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreClienteActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("DNI:");
 
         txtDni.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("RUC:");
+        labelRuc.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelRuc.setText("RUC:");
 
-        txtRuc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        RUCText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Nombre de Producto:");
@@ -173,8 +216,13 @@ public class ModuloVentas extends javax.swing.JFrame {
         btnAgregar.setText("Agregar al carrito");
         btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Pagar Pedido Confirmado");
+        btnPagoPedidoConfirmado.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnPagoPedidoConfirmado.setText("Pagar Pedido Confirmado");
+        btnPagoPedidoConfirmado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagoPedidoConfirmadoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,48 +237,54 @@ public class ModuloVentas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtNombreProducto)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel9)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spinCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(spinCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rbYape)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(rbYape)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rbEfectivo))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(rbEfectivo))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbPersona))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbTienda)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rbWhatsapp)
-                                    .addComponent(rbEmpresa))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(rbPersona))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(rbTienda)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(rbWhatsapp)
+                                            .addComponent(rbEmpresa))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(labelRuc)
                         .addGap(18, 18, 18)
-                        .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(RUCText, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel12)
@@ -247,7 +301,7 @@ public class ModuloVentas extends javax.swing.JFrame {
                             .addComponent(btnAgregar)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(318, 318, 318)
+                                .addGap(171, 171, 171)
                                 .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(51, 51, 51))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -260,7 +314,7 @@ public class ModuloVentas extends javax.swing.JFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(btnRegistrarWhatsapp)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnPagoPedidoConfirmado, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(215, 215, 215)))
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(75, 75, 75))))
@@ -283,13 +337,14 @@ public class ModuloVentas extends javax.swing.JFrame {
                     .addComponent(rbPersona)
                     .addComponent(rbEmpresa))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelRuc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(RUCText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -303,7 +358,7 @@ public class ModuloVentas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPagoPedidoConfirmado, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegistrarWhatsapp))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -335,24 +390,46 @@ public class ModuloVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPrincipalActionPerformed
-              int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer regresar a la pantalla principal?","Confirmación de regreso a la VP",JOptionPane.YES_NO_OPTION);
-        if(resultado==0){
-          this.dispose();
-         new Login().setVisible(true); 
-        }
+ 
+
     }//GEN-LAST:event_btnMenuPrincipalActionPerformed
+
+    private void txtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreClienteActionPerformed
+
+    private void rbTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTiendaActionPerformed
+        elementosDesactivadosTipoPedido();
+    }//GEN-LAST:event_rbTiendaActionPerformed
+
+    private void rbWhatsappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbWhatsappActionPerformed
+       elementosDesactivadosTipoPedido();
+    }//GEN-LAST:event_rbWhatsappActionPerformed
+
+    private void rbPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbPersonaActionPerformed
+        elementosDesactivadosTipoCliente();
+    }//GEN-LAST:event_rbPersonaActionPerformed
+
+    private void rbEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbEmpresaActionPerformed
+        elementosDesactivadosTipoCliente();
+    }//GEN-LAST:event_rbEmpresaActionPerformed
+
+    private void btnPagoPedidoConfirmadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagoPedidoConfirmadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPagoPedidoConfirmadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTextField RUCText;
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnFinalizarVenta;
     public javax.swing.JButton btnMenuPrincipal;
+    public javax.swing.JButton btnPagoPedidoConfirmado;
     public javax.swing.JButton btnRegistrarWhatsapp;
     public javax.swing.ButtonGroup buttonGroup1;
     public javax.swing.ButtonGroup buttonGroup2;
     public javax.swing.ButtonGroup buttonGroup3;
     public javax.swing.ButtonGroup buttonGroup4;
-    public javax.swing.JButton jButton1;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel11;
@@ -361,11 +438,11 @@ public class ModuloVentas extends javax.swing.JFrame {
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
     public javax.swing.JLabel jLabel5;
-    public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
     public javax.swing.JLabel jLabel9;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel labelRuc;
     public javax.swing.JRadioButton rbBoleta;
     public javax.swing.JRadioButton rbEfectivo;
     public javax.swing.JRadioButton rbEmpresa;
@@ -379,7 +456,6 @@ public class ModuloVentas extends javax.swing.JFrame {
     public javax.swing.JTextField txtDni;
     public javax.swing.JTextField txtNombreCliente;
     public javax.swing.JTextField txtNombreProducto;
-    public javax.swing.JTextField txtRuc;
     public javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

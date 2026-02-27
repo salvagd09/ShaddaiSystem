@@ -30,12 +30,12 @@ END //
 DELIMITER ;
 DELIMITER //
 /*SP para registrar los detalles de los pedidos marcados como pendiente*/
-CREATE PROCEDURE SP_Pedido_Pendiente_Detalles(IN P_ID_Pedido_Generado INT,IN P_Nombre_Producto VARCHAR(200),IN P_Cantidad INT)
+CREATE PROCEDURE SP_Pedido_Pendiente_Detalles(IN P_ID_Pedido_Generado INT,IN P_Codigo_Producto VARCHAR(200),IN P_Cantidad INT)
 BEGIN
 	DECLARE v_ID_Producto INT;
     DECLARE v_Precio_Unitario DECIMAL(10,2);
     Select ID_Producto,Precio INTO v_ID_Producto,v_Precio_Unitario from Producto
-    WHERE Nombre=P_Nombre_Producto;
+    WHERE Codigo_Producto=P_Codigo_Producto;
     INSERT INTO Detalles_Pedido(ID_Pedido,ID_Producto,cantidad,precioUnitario) VALUES(P_ID_Pedido_Generado,v_ID_Producto,P_Cantidad,
     v_Precio_Unitario);
 END //

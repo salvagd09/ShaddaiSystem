@@ -327,8 +327,6 @@ public class PedidoDAO {
         String sqlObtenerCliente = "SELECT ID_Cliente FROM Pedido WHERE ID_Pedido = ?";
         String sqlLeerDetalles = "SELECT ID_Producto, cantidad, precioUnitario FROM Detalles_Pedido WHERE ID_Pedido = ?";
         String sqlDescontarStock = "UPDATE Producto SET Stock_Tienda = Stock_Tienda - ? WHERE ID_Producto = ?";
-        String sqlInsertarVenta = "INSERT INTO Venta (ID_Pedido, ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante,"
-                                    + " Tipo_Venta, Metodo_Pago) VALUES (?, ?, ?, NOW(), ?, 'Boleta', 'Whatsapp', 'Efectivo')";
         String sqlConfirmar = "UPDATE Pedido SET Estado = 'Confirmado' WHERE ID_Pedido = ?";
 
         try {
@@ -366,19 +364,6 @@ public class PedidoDAO {
             rsDetalles.close();
             pstLeer.close();
             pstDescontar.close();
-
-            PreparedStatement pstVenta = conn.prepareStatement(sqlInsertarVenta);
-            pstVenta.setInt(1, idPedido);
-            pstVenta.setInt(2, idUsuario);
-            if(idCliente > 0) {
-                pstVenta.setInt(3, idCliente);
-            } else {
-                pstVenta.setNull(3, Types.INTEGER);
-            }
-            pstVenta.setDouble(4, totalVenta);
-            pstVenta.executeUpdate();
-            pstVenta.close();
-
             PreparedStatement pstConfirmar = conn.prepareStatement(sqlConfirmar);
             pstConfirmar.setInt(1, idPedido);
             pstConfirmar.executeUpdate();

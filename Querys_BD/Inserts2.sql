@@ -117,3 +117,10 @@ BEGIN
     SELECT 'OK' AS Estado, 'Venta registrada' AS Mensaje, v_ID_Venta AS ID_Venta_Generado;
 END //
 DELIMITER ;
+Select * from cliente;
+Select * from usuarios;
+Select * from producto;
+Select * from pedido;
+Select * from detalles_pedido;
+SELECT ID_Pedido, Estado FROM Pedido WHERE ID_Pedido = 1;
+CALL Obtener_DatosDP_Pedido_Pendiente(1);

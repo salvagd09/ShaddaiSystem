@@ -6,9 +6,13 @@ package Vista;
 
 import Controlador.LoginController;
 import Modelo.DTO.LoginResultDTO;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -83,6 +87,12 @@ public class Login extends javax.swing.JFrame {
         jLabel6.setText("Login");
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        Password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                PasswordKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,6 +192,33 @@ public class Login extends javax.swing.JFrame {
             new Area_Registrar_Transferencias(resultado.getIdUsuario()).setVisible(true);
         }
     }//GEN-LAST:event_BotonLoginActionPerformed
+
+    private void PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordKeyPressed
+        if (evt.getKeyCode() != KeyEvent.VK_ENTER) return;
+        String username=UsernameTxt.getText().trim();
+        String password=new String(Password.getPassword());
+        if(username.isEmpty() || password.isEmpty()){
+            Mensaje_Error.setText("Error.Su usuario o contraseña son incorrectos.");
+            return;
+        }
+        LoginResultDTO resultado=login.AutenticarUsuario(username, password);
+        if(resultado==null){
+             JOptionPane.showMessageDialog(this,
+                "Usuario o contraseña incorrectos",
+                "Error de autenticación",
+                JOptionPane.ERROR_MESSAGE);
+             limpiarCampos();
+             return;
+        }
+        this.dispose();
+        if(resultado.esAdministrador()){
+            new Ventana_Principal_Administrador(resultado.getIdUsuario()).setVisible(true);
+        } else if(resultado.esVendedor()){
+            new Ventana_Principal_Vendedor(resultado.getIdUsuario()).setVisible(true);
+        } else if(resultado.esAlmacenero()){
+            new Area_Registrar_Transferencias(resultado.getIdUsuario()).setVisible(true);
+        }
+    }//GEN-LAST:event_PasswordKeyPressed
 
     /**
      * @param args the command line arguments

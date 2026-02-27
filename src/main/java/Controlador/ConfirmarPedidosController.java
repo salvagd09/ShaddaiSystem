@@ -7,7 +7,6 @@ package Controlador;
 import Modelo.DAO.PedidoDAO;
 import Vista.Area_Confirmar_Pedidos;
 import Vista.Ventana_Principal_Vendedor;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -16,19 +15,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ConfirmarPedidosController implements ActionListener {
-
     private Area_Confirmar_Pedidos vista;
     private PedidoDAO pedidoDAO;
     private int idUsuario;
     private int idPedidoSeleccionado = -1;
-
     public ConfirmarPedidosController(Area_Confirmar_Pedidos vista, int idUsuario) {
         this.vista = vista;
         this.idUsuario = idUsuario;
         this.pedidoDAO = new PedidoDAO();
-
         limpiarTablas();
-
         this.vista.btnBuscarDni.addActionListener(this);
         this.vista.btnConfirmar.addActionListener(this);
         this.vista.btnActualizarCantidad.addActionListener(this);
@@ -44,7 +39,6 @@ public class ConfirmarPedidosController implements ActionListener {
             }
         });
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == vista.btnBuscarDni) {
@@ -57,7 +51,6 @@ public class ConfirmarPedidosController implements ActionListener {
             volverMenu();
         }
     }
-
     private void limpiarTablas() {
         vista.tblPedidos.setModel(new DefaultTableModel(new Object[]{"ID Pedido Pendiente"}, 0));
         vista.tblDetalles.setModel(new DefaultTableModel(new Object[]{"Producto", "Cantidad Solicitada", "Stock Actual", "Disponible"}, 0));
@@ -110,17 +103,17 @@ public class ConfirmarPedidosController implements ActionListener {
 
         if (!todoDisponible) {
             JOptionPane.showMessageDialog(vista, 
-                "No se puede confirmar la venta.\nEl pedido que supera el stoCK."
+                "No se puede confirmar el pedido.\nEl pedido que supera el stoCK."
                         + "\n 'Actualizar Cantidad'." );
             return; 
         }
 
-        int confirmacion = JOptionPane.showConfirmDialog(vista, "¿Desea confirmar el pedido y registrar la venta en la BD?", 
+        int confirmacion = JOptionPane.showConfirmDialog(vista, "¿Desea confirmar el pedido  en la BD?", 
                 "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             boolean exito = pedidoDAO.confirmarPedido(idPedidoSeleccionado, idUsuario);
             if (exito) {
-                JOptionPane.showMessageDialog(vista, "Pedido Confirmado y Venta generada exitosamente");
+                JOptionPane.showMessageDialog(vista, "Pedido Confirmado  exitosamente");
                 buscarPedidosPorDni(); 
                 vista.tblDetalles.setModel(new DefaultTableModel(new Object[]{"Producto", "Cantidad Solicitada", "Stock Actual", "Disponible"}, 0));
                 vista.txtNombreCliente.setText("");

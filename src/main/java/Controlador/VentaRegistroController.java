@@ -11,6 +11,7 @@ import Modelo.DAO.VentaDAO;
 import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.Entidad.DetalleVenta;
 import Modelo.Entidad.Producto;
+import Vista.Login;
 import Vista.ModuloVentas;
 import Vista.Ventana_Principal_Vendedor;
 import java.awt.event.ActionEvent;
@@ -68,10 +69,12 @@ import javax.swing.table.DefaultTableModel;
     }
     
     private void volverMenuPrincipal() {
-        vista.dispose(); 
-        new Ventana_Principal_Vendedor(idUsuario).setVisible(true); 
+        int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer regresar a la pantalla principal?","Confirmación de regreso a la VP",JOptionPane.YES_NO_OPTION);
+        if(resultado==0){
+          vista.dispose();
+         new Ventana_Principal_Vendedor(idUsuario).setVisible(true); 
     }
-
+    }
     private void agregarAlCarrito() {
         String nombreProducto = vista.txtNombreProducto.getText().trim();
         int cantidad = (Integer) vista.spinCantidad.getValue();
@@ -121,7 +124,7 @@ import javax.swing.table.DefaultTableModel;
 
         String tipoCliente = vista.rbPersona.isSelected() ? "Persona" : "Empresa";
         String dniCliente = vista.txtDni.getText().trim(); 
-        String rucCliente = vista.txtRuc.getText().trim();
+        String rucCliente = vista.RUCText.getText().trim();
         String nombreCliente = vista.txtNombreCliente.getText().trim(); 
         String tipoComprobante = vista.rbFactura.isSelected() ? "Factura" : "Boleta";
         String metodoPago = vista.rbYape.isSelected() ? "Yape/Plin" : "Efectivo";
@@ -144,7 +147,7 @@ import javax.swing.table.DefaultTableModel;
             totalVenta = 0.0;
             vista.txtTotal.setText("0.00");
             vista.txtDni.setText("");
-            vista.txtRuc.setText("");
+            vista.RUCText.setText("");
             vista.txtNombreCliente.setText(""); 
         } else {
             JOptionPane.showMessageDialog(vista, "Error al guardar en BD.");
@@ -165,7 +168,7 @@ import javax.swing.table.DefaultTableModel;
 
         String tipoCliente = vista.rbPersona.isSelected() ? "Persona" : "Empresa";
         String dni = vista.txtDni.getText().trim();
-        String ruc = vista.txtRuc.getText().trim();
+        String ruc = vista.RUCText.getText().trim();
 
         if (tipoCliente.equals("Persona") && dni.isEmpty()) {
             JOptionPane.showMessageDialog(vista, "Debe ingresar el DNI para clientes de tipo Persona.");
@@ -189,7 +192,7 @@ import javax.swing.table.DefaultTableModel;
             vista.txtTotal.setText("0.00");
             vista.txtNombreCliente.setText("");
             vista.txtDni.setText("");
-            vista.txtRuc.setText("");
+            vista.RUCText.setText("");
             
         } else {
             JOptionPane.showMessageDialog(vista, "error al registrar el pedido pendiente en la bd.");
