@@ -31,6 +31,7 @@ Modelo\Conexion\dbConexion.class
 Modelo\Entidad\DetallesTransferenciaStock.class
 Vista\Area_Registrar_Transferencias$1.class
 Controlador\Registro_CliFrecuente.class
+Vista\ModuloVentas$7.class
 Modelo\DTO\DatosParaClienteFrecuenteDTO.class
 Vista\Ventana_Principal_Vendedor.class
 Modelo\Entidad\Producto.class

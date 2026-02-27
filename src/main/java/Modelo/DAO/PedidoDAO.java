@@ -69,9 +69,9 @@ public class PedidoDAO {
             stmt.setInt(1,IDPedido);
             ResultSet rs=stmt.executeQuery();
             if(rs.next()){
-                cliente.setNombreCompleto("NombreCompleto");
-                cliente.setDNI("DNI");
-                cliente.setRUC("RUC");
+                cliente.setNombreCompleto(rs.getString("NombreCompleto"));
+                cliente.setDNI(rs.getString("DNI"));
+                cliente.setRUC(rs.getString("RUC"));
             }
         }catch(SQLException e){
            e.printStackTrace();
@@ -88,9 +88,10 @@ public class PedidoDAO {
            ResultSet rs=stmt.executeQuery();
            while(rs.next()){
                DetallesPedidoConfirmadoDTO dto = new DetallesPedidoConfirmadoDTO();
+               dto.setIDProducto(rs.getString("Codigo_Producto"));
                dto.setNombre(rs.getString("Nombre"));
                dto.setCantidad(rs.getInt("cantidad"));
-               dto.setPrecio(rs.getDouble("Precio Unitario"));
+               dto.setPrecio(rs.getDouble("Precio"));
                dto.setSubTotal(rs.getDouble("Subtotal"));
                listaDPedidosC.add(dto);
            }
@@ -157,7 +158,7 @@ public class PedidoDAO {
         return NombreYFecha;
     }
     public List<DetallesPedidoPendienteDTO> ObtenerDetallesPPendientes(int idPedido){
-       String sql="{CALL Obtener_DatosDP_Pedido_Confirmado(?)}";
+       String sql="{CALL Obtener_DatosDP_Pedido_Pendiente(?)}";
        List<DetallesPedidoPendienteDTO> listaDPedidos = new ArrayList<>();
        try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt =  conn.prepareCall(sql)){
@@ -379,7 +380,22 @@ public class PedidoDAO {
         }
         return exito;
     }
-
+    public List<Integer> obtenerIDsPedidosConfirmados(String DNI){
+        List<Integer> IDsPedidosConfirmados=new ArrayList<>();
+        int idPedidoConfirmado=0;
+        String sql="{CALL Obtener_IDs_Pedidos_Confirmados(?)}";
+        try{
+            Connection conn = new dbConexion().conectar();
+            CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setString(1,DNI);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                idPedidoConfirmado=rs.getInt("ID_Pedido");
+                IDsPedidosConfirmados.add(idPedidoConfirmado);
+            }
+        }catch (Exception e) { e.printStackTrace(); }
+         return IDsPedidosConfirmados;
+    } 
     // CU02
     public String actualizarCantidadDetalle(int idPedido, String nombreProd, int nuevaCantidad) {
         String mensaje = "Error desconocido";
@@ -397,5 +413,15 @@ public class PedidoDAO {
             conn.close();
         } catch (Exception e) { e.printStackTrace(); }
         return mensaje;
+    }
+    public boolean FinalizarPedido(int idPedido){
+        String sql="{CALL Finalizar_Pedido(?)}";
+         try {
+            Connection conn = new dbConexion().conectar();
+            CallableStatement stmt = conn.prepareCall(sql);
+            stmt.setInt(1, idPedido);
+            stmt.execute();
+            return true;
+        } catch (Exception e) { e.printStackTrace(); return false;}
     }
 }

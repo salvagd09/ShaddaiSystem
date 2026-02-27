@@ -9,11 +9,20 @@ package Modelo.DTO;
  * @author Usuario
  */
 public class DetallesPedidoConfirmadoDTO {
+    private String CodigoProducto;
     private String Nombre;
     private int Cantidad;
     private double Precio;
     private double SubTotal;
     public DetallesPedidoConfirmadoDTO() {
+    }
+
+    public String getCodigoProducto() {
+        return CodigoProducto;
+    }
+
+    public void setIDProducto(String CodigoProducto) {
+        this.CodigoProducto = CodigoProducto;
     }
 
     public String getNombre() {

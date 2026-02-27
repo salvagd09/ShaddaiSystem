@@ -1,5 +1,7 @@
 package Vista;
 
+import javax.swing.JOptionPane;
+
 
 public class ModuloVentas extends javax.swing.JFrame {
 
@@ -25,11 +27,9 @@ public class ModuloVentas extends javax.swing.JFrame {
         if(rbTienda.isSelected()){
             btnPagoPedidoConfirmado.setVisible(false);
             btnRegistrarWhatsapp.setVisible(false);
-            btnFinalizarVenta.setVisible(true);
         } else if(rbWhatsapp.isSelected()){
              btnPagoPedidoConfirmado.setVisible(true);
             btnRegistrarWhatsapp.setVisible(true);
-            btnFinalizarVenta.setVisible(false);
         }
     }
     /**
@@ -415,7 +415,11 @@ public class ModuloVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_rbEmpresaActionPerformed
 
     private void btnPagoPedidoConfirmadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagoPedidoConfirmadoActionPerformed
-        // TODO add your handling code here:
+            String dni = txtDni.getText().trim();
+            if (dni.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ingrese el DNI del cliente.");
+                return;
+            }
     }//GEN-LAST:event_btnPagoPedidoConfirmadoActionPerformed
 
 

@@ -8,7 +8,9 @@ package Controlador;
 import Modelo.DAO.PedidoDAO;
 import Modelo.DAO.ProductoDAO;
 import Modelo.DAO.VentaDAO;
+import Modelo.DTO.DetallesPedidoConfirmadoDTO;
 import Modelo.DTO.ResultadoOperacionDTO;
+import Modelo.Entidad.Cliente;
 import Modelo.Entidad.DetalleVenta;
 import Modelo.Entidad.Producto;
 import Vista.Login;
@@ -34,6 +36,7 @@ import javax.swing.table.DefaultTableModel;
     private List<DetalleVenta> carrito;
     private double totalVenta = 0;
     private int idUsuario;
+    private Integer idSeleccionado;
     public VentaRegistroController(ModuloVentas vista, int idUsuario) {
         this.vista = vista;
         this.idUsuario = idUsuario;
@@ -48,7 +51,7 @@ import javax.swing.table.DefaultTableModel;
         modelo.addColumn("Precio");
         modelo.addColumn("Subtotal");
         this.vista.tblVentas.setModel(modelo);
-
+        this.vista.btnPagoPedidoConfirmado.addActionListener(this);
         this.vista.btnAgregar.addActionListener(this);
         this.vista.btnFinalizarVenta.addActionListener(this);
         this.vista.btnRegistrarWhatsapp.addActionListener(this);
@@ -65,16 +68,71 @@ import javax.swing.table.DefaultTableModel;
             registrarPedidoWhatsapp();
         } else if (e.getSource() == vista.btnMenuPrincipal) {
             volverMenuPrincipal();
-        }
+        }  else if (e.getSource() == vista.btnPagoPedidoConfirmado) {
+            PagoPedidoConfirmado();
     }
-    
+    }
     private void volverMenuPrincipal() {
         int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer regresar a la pantalla principal?","Confirmación de regreso a la VP",JOptionPane.YES_NO_OPTION);
         if(resultado==0){
           vista.dispose();
          new Ventana_Principal_Vendedor(idUsuario).setVisible(true); 
+        }
     }
-    }
+    private void PagoPedidoConfirmado() {                                                        
+            String dni = vista.txtDni.getText().trim();
+            if (dni.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Ingrese el DNI del cliente.");
+                return;
+            }
+            List<Integer> pedidosConfirmados = pedidoDAO.obtenerIDsPedidosConfirmados(dni);
+             if (pedidosConfirmados.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Este cliente no tiene pedidos confirmados pendientes de pago.");
+            return;
+            }
+            Integer[] opciones = pedidosConfirmados.toArray(new Integer[0]);
+             idSeleccionado = (Integer) JOptionPane.showInputDialog(
+                vista,
+                "Seleccione el ID del pedido a pagar:",
+                "Pedidos Confirmados",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+            );
+                if (idSeleccionado != null) {
+                    Cliente clientePConfirmado=pedidoDAO.ObtenerPedidoConfirmado(idSeleccionado);
+                    if(vista.rbEmpresa.isSelected()){
+                        vista.txtNombreCliente.setText(clientePConfirmado.getNombreCompleto());
+                        vista.txtDni.setText(clientePConfirmado.getDNI());
+                        vista.RUCText.setText(clientePConfirmado.getRUC());
+                    }
+                    else if(vista.rbPersona.isSelected()){
+                        vista.txtNombreCliente.setText(clientePConfirmado.getNombreCompleto());
+                        vista.txtDni.setText(clientePConfirmado.getDNI());        
+                    }
+                    List<DetallesPedidoConfirmadoDTO> detallesConfirmados=pedidoDAO.ObtenerDetallesPConfirmado(idSeleccionado);
+                      DefaultTableModel modelo = (DefaultTableModel) vista.tblVentas.getModel();
+                      for (DetallesPedidoConfirmadoDTO detallePC : detallesConfirmados) {
+                        modelo.addRow(new Object[]{
+                            detallePC.getCodigoProducto(),
+                            detallePC.getNombre(),
+                            detallePC.getCantidad(),
+                            detallePC.getPrecio(),
+                            detallePC.getSubTotal()
+                        });
+                        totalVenta += detallePC.getSubTotal();
+                        vista.txtTotal.setText(String.format("%.2f", totalVenta));
+
+                        // ← Agregar esto:
+                        DetalleVenta detalle = new DetalleVenta();
+                        detalle.setCodigoProductoTemp(detallePC.getCodigoProducto());
+                        detalle.setCantidad(detallePC.getCantidad());
+                        detalle.setPrecioUnitario(detallePC.getPrecio());
+                        carrito.add(detalle);
+                      }
+                }
+    }  
     private void agregarAlCarrito() {
         String nombreProducto = vista.txtNombreProducto.getText().trim();
         int cantidad = (Integer) vista.spinCantidad.getValue();
@@ -121,7 +179,8 @@ import javax.swing.table.DefaultTableModel;
             JOptionPane.showMessageDialog(vista, "El carrito está vacío.");
             return;
         }
-
+        boolean exito=true;
+        String lugarVenta=vista.rbTienda.isSelected()? "Tienda":"Whatsapp";
         String tipoCliente = vista.rbPersona.isSelected() ? "Persona" : "Empresa";
         String dniCliente = vista.txtDni.getText().trim(); 
         String rucCliente = vista.RUCText.getText().trim();
@@ -137,9 +196,15 @@ import javax.swing.table.DefaultTableModel;
             JOptionPane.showMessageDialog(vista, "Debe ingresar el RUC para clientes de tipo Empresa.");
             return;
         }
-        
-        boolean exito = ventaDAO.registrarVentaCompleta("Tienda", idUsuario, tipoCliente, dniCliente, rucCliente, nombreCliente, tipoComprobante, metodoPago, carrito);
-
+        if("Tienda".equals(lugarVenta)){
+            exito = ventaDAO.registrarVentaCompleta(lugarVenta, idUsuario,null,tipoCliente, dniCliente, rucCliente, nombreCliente, tipoComprobante, metodoPago, carrito);
+        } else if("Whatsapp".equals(lugarVenta)){
+            boolean finalizado=pedidoDAO.FinalizarPedido(idSeleccionado);
+            exito = ventaDAO.registrarVentaCompleta(lugarVenta, idUsuario,idSeleccionado,tipoCliente, dniCliente, rucCliente, nombreCliente, tipoComprobante, metodoPago, carrito);
+            if(finalizado){
+                JOptionPane.showMessageDialog(vista, "Pedido finalizado");
+            }
+        }
         if (exito) {
             JOptionPane.showMessageDialog(vista, "Venta registrada con éxito");
             ((DefaultTableModel) vista.tblVentas.getModel()).setRowCount(0);

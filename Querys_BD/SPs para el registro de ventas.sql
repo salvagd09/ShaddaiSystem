@@ -6,14 +6,14 @@ Select * from Venta;
 DELIMITER //
 CREATE PROCEDURE Obtener_DatosP_Pedido_Confirmado(IN P_ID_Pedido INT)
 BEGIN
-	Select NombreCompleto,DNI,RUC FROM Cliente cl JOIN Pedido pe ON cl.ID_Cliente=pe.ID_Cliente WHERE pe.ID_Pedido=P_ID_Pedido AND Estado="Confirmado";
+	Select NombreCompleto,DNI,RUC FROM Cliente cl JOIN Pedido pe ON cl.ID_Cliente=pe.ID_Cliente WHERE pe.ID_Pedido=P_ID_Pedido AND pe.Estado="Confirmado";
 END //
 DELIMITER ;
 DELIMITER //
 /*Mostrar los productos del pedido confirmado en la lista para Registrar Ventas*/
 CREATE PROCEDURE Obtener_DatosDP_Pedido_Confirmado(IN P_ID_Pedido INT)
 BEGIN
-	Select pro.Nombre,dpe.cantidad,pro.Precio AS 'Precio Unitario',(pro.Precio*dpe.cantidad) AS Subtotal FROM Producto pro
+	Select pro.Codigo_Producto,pro.Nombre,dpe.cantidad,pro.Precio AS 'Precio',(pro.Precio*dpe.cantidad) AS Subtotal FROM Producto pro
     JOIN Detalles_Pedido dpe ON pro.ID_Producto=dpe.ID_Producto
     JOIN Pedido pe ON pe.ID_Pedido=dpe.ID_Pedido
     WHERE dpe.ID_Pedido=P_ID_Pedido AND pe.Estado="Confirmado";

@@ -204,13 +204,13 @@ public class VentaDAO {
 
     // CU01
     // Finalizar Venta 
-    public boolean registrarVentaCompleta(String tipoVenta, int idUsuario, String tipoCliente, String dniCliente, String rucCliente, String nombreCliente, 
+    public boolean registrarVentaCompleta(String tipoVenta, int idUsuario,Integer idPedido, String tipoCliente, String dniCliente, String rucCliente, String nombreCliente, 
                                           String tipoComprobante, String metodoPago, 
                                           List<DetalleVenta> carrito) {
         Connection conn = null;
         boolean exito = false;
         
-        String sqlCabecera = "{CALL Registrar_Venta(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sqlCabecera = "{CALL Registrar_Venta(?, ?, ?,?, ?, ?, ?, ?, ?)}";
         String sqlDetalle = "{CALL Registrar_DetallesVenta(?, ?, ?)}";
 
         try {
@@ -220,24 +220,29 @@ public class VentaDAO {
             try (CallableStatement stmtCabecera =  conn.prepareCall(sqlCabecera)) {
                 stmtCabecera.setString(1, tipoVenta);
                 stmtCabecera.setInt(2, idUsuario);
-                stmtCabecera.setString(3, tipoCliente);
+                if (idPedido !=null) {
+                    stmtCabecera.setInt(3, idPedido);
+                } else {
+                    stmtCabecera.setNull(3, java.sql.Types.INTEGER);
+                }
+                stmtCabecera.setString(4, tipoCliente);
                 
                 if (dniCliente == null || dniCliente.trim().isEmpty()) {
-                    stmtCabecera.setNull(4, java.sql.Types.VARCHAR);
+                    stmtCabecera.setNull(5, java.sql.Types.VARCHAR);
                 } else {
-                    stmtCabecera.setString(4, dniCliente);
+                    stmtCabecera.setString(5, dniCliente);
                 }
                 
                 if (rucCliente == null || rucCliente.trim().isEmpty()) {
-                    stmtCabecera.setNull(5, java.sql.Types.VARCHAR);
+                    stmtCabecera.setNull(6, java.sql.Types.VARCHAR);
                 } else {
-                    stmtCabecera.setString(5, rucCliente);
+                    stmtCabecera.setString(6, rucCliente);
                 }
                 
-                stmtCabecera.setString(6, (nombreCliente == null || nombreCliente.trim().isEmpty()) ? null : nombreCliente);
+                stmtCabecera.setString(7, (nombreCliente == null || nombreCliente.trim().isEmpty()) ? null : nombreCliente);
                 
-                stmtCabecera.setString(7, tipoComprobante);
-                stmtCabecera.setString(8, metodoPago);
+                stmtCabecera.setString(8, tipoComprobante);
+                stmtCabecera.setString(9, metodoPago);
 
                 try (ResultSet rs = stmtCabecera.executeQuery()) {
                     if (rs.next() && "OK".equals(rs.getString("Estado"))) {

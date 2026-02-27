@@ -76,6 +76,7 @@ DROP PROCEDURE IF EXISTS Registrar_Venta //
 CREATE PROCEDURE Registrar_Venta(
     IN P_Tipo_Venta ENUM('Tienda', 'Whatsapp'),
     IN P_ID_Usuario INT,
+    IN P_ID_Pedido INT,/*Nuevo parámetro en caso de los pedidos a registrar su venta*/
     IN P_Tipo_Cliente ENUM('Persona', 'Empresa'),
     IN P_DNI_Cliente VARCHAR(8),
     IN P_RUC_Cliente VARCHAR(11),
@@ -86,7 +87,6 @@ CREATE PROCEDURE Registrar_Venta(
 BEGIN
     DECLARE v_ID_Cliente INT DEFAULT NULL;
     DECLARE v_ID_Venta INT;
-
     START TRANSACTION;
 
     IF P_Tipo_Cliente = 'Persona' AND P_DNI_Cliente IS NOT NULL AND P_DNI_Cliente != '' THEN
@@ -107,20 +107,36 @@ BEGIN
             SET v_ID_Cliente = LAST_INSERT_ID();
         END IF;
     END IF;
-
-    INSERT INTO Venta (ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante, Tipo_Venta, Metodo_Pago) 
-    VALUES (P_ID_Usuario, v_ID_Cliente, NOW(), 0.00, P_Tipo_Comprobante, P_Tipo_Venta, P_Metodo_Pago);
-    
-    SET v_ID_Venta = LAST_INSERT_ID();
-    
+	IF P_Tipo_Venta="Tienda" THEN
+		INSERT INTO Venta (ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante, Tipo_Venta, Metodo_Pago) 
+		VALUES (P_ID_Usuario, v_ID_Cliente, NOW(), 0.00, P_Tipo_Comprobante, P_Tipo_Venta, P_Metodo_Pago);
+		SET v_ID_Venta = LAST_INSERT_ID();
+    ELSEIF P_Tipo_Venta="Whatsapp" THEN
+		INSERT INTO Venta (ID_Pedido,ID_Usuario, ID_Cliente, Fecha, Total, Tipo_Comprobante, Tipo_Venta, Metodo_Pago) 
+		VALUES (P_ID_Pedido,P_ID_Usuario, v_ID_Cliente, NOW(), 0.00, P_Tipo_Comprobante, P_Tipo_Venta, P_Metodo_Pago);
+		SET v_ID_Venta = LAST_INSERT_ID();
+	END IF;
     COMMIT;
     SELECT 'OK' AS Estado, 'Venta registrada' AS Mensaje, v_ID_Venta AS ID_Venta_Generado;
+END //
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE Obtener_IDs_Pedidos_Confirmados(IN P_DNI VARCHAR(8))
+BEGIN
+	SELECT ID_Pedido from Pedido WHERE Estado="Confirmado";
 END //
 DELIMITER ;
 Select * from cliente;
 Select * from usuarios;
 Select * from producto;
 Select * from pedido;
+Select * from venta;
 Select * from detalles_pedido;
 SELECT ID_Pedido, Estado FROM Pedido WHERE ID_Pedido = 1;
 CALL Obtener_DatosDP_Pedido_Pendiente(1);
+DELIMITER //
+CREATE  PROCEDURE Finalizar_Pedido(IN P_ID_Pedido INT)
+BEGIN
+	UPDATE Pedido SET Estado="Finalizado" WHERE ID_Pedido=P_ID_Pedido;
+END //
+DELIMITER ;
