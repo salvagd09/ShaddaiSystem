@@ -13,6 +13,7 @@ Vista\Area_Generar_Reporte.class
 Modelo\DTO\MostrarDatosClienteDTO.class
 Modelo\DTO\DetallesPedidoPendienteDTO.class
 Modelo\Enum\TipoVenta.class
+Vista\Area_Generar_Reporte$1.class
 Vista\Area_Registrar_Transferencias$2.class
 Modelo\DAO\TransferenciaDAO.class
 Vista\Area_Registar_Cliente_Frecuente.class

@@ -18,7 +18,7 @@ BEGIN
     IF P_Nombre_Vendedor IS NOT NULL THEN
         SELECT ID_USUARIO INTO v_id_Vendedor
         FROM Usuarios 
-        WHERE ID_Rol = 2 
+        WHERE Rol = 2 
 		AND CONCAT(Nombres, ' ', Apellidos) = P_Nombre_Vendedor;
     END IF;
     /*1. Ventas por producto (barras)*/
@@ -72,4 +72,6 @@ BEGIN
 	Select CONCAT(Nombres,' ',Apellidos) AS Vendedor FROM Usuarios WHERE Rol=2;
 END //
 DELIMITER ;
-INSERT INTO Roles(NombreRol) VALUES ('Administrador'),('Vendedor'),('Almacenero')
+INSERT INTO Roles(NombreRol) VALUES ('Administrador'),('Vendedor'),('Almacenero');
+Select * from usuarios;
+INSERT INTO Usuarios(Nombres,Apellidos,Contrasena,Rol,username) VALUES ("Mario Alberto","Kempes Gonzalez","12345",2,"Mario78");

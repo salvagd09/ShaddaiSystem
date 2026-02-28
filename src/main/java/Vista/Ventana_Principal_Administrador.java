@@ -138,12 +138,12 @@ public class Ventana_Principal_Administrador extends javax.swing.JFrame {
 
     private void AreaNotificacionesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaNotificacionesBtnActionPerformed
         this.dispose();
-        new Area_Generar_Reporte().setVisible(true);
+        new Area_Notificaciones().setVisible(true);
     }//GEN-LAST:event_AreaNotificacionesBtnActionPerformed
 
     private void AreaReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaReporteBtnActionPerformed
         this.dispose();
-        new Area_Generar_Reporte().setVisible(true);
+        new Area_Generar_Reporte(idUsuario).setVisible(true);
     }//GEN-LAST:event_AreaReporteBtnActionPerformed
 
     private void CerrarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionBtnActionPerformed
