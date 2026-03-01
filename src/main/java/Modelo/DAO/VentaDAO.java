@@ -144,7 +144,7 @@ public class VentaDAO {
     }
 
     public DatosParaClienteFrecuenteDTO ContabilizarVentasMes(String DNI,String RUC){
-        String sql="{CALL Contabilizar_Ventas_Mes(?,?)}";
+        String sql="{CALL Contabilizar_Compras_Mes(?,?)}";
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt =  conn.prepareCall(sql)){
             if(DNI!= null && !DNI.isEmpty()){

@@ -132,18 +132,4 @@ CALL Contabilizar_Compras_Mes('72930314', NULL);
 SELECT fecha FROM Venta 
 JOIN Cliente c ON c.ID_Cliente = Venta.ID_Cliente
 WHERE c.DNI = '72930314';
-DELIMITER //
-/*Ayuda al CU01*/
-CREATE PROCEDURE Contabilizar_Ventas_Mes(IN P_DNI VARCHAR(8),IN P_RUC VARCHAR(11))
-BEGIN 
-    SELECT c.NombreCompleto AS Nombre_Cliente,
-    COUNT(*) AS Total_Compras_Mes
-    FROM Venta v
-    JOIN Cliente c ON v.ID_Cliente = c.ID_Cliente
-    WHERE ((P_DNI IS NOT NULL AND c.DNI = P_DNI) 
-        OR (P_RUC IS NOT NULL AND c.RUC = P_RUC))
-    AND v.Fecha>= NOW() - INTERVAL 30 DAY
-    GROUP BY c.NombreCompleto;
-END //
-DELIMITER ;
 CALL Mostrar_Datos_Cliente("Persona",'72930314')
