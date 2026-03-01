@@ -6,7 +6,9 @@ package Controlador;
 
 import Modelo.DAO.NotificacionDAO;
 import Modelo.DTO.NotificacionDTO;
+import Modelo.DTO.ProductosBajoStockDTO;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,7 +16,18 @@ import java.util.List;
  */
 public class NotificacionesController {
     public NotificacionDAO notificacion;
-    public List<NotificacionDTO> Mostrar_Notificacion(){
+
+    public NotificacionesController() {
+        this.notificacion=new NotificacionDAO();
+    }
+    
+    public List<NotificacionDTO> mostrarNotificaciones(){
         return notificacion.MostrarNotificaciones();
     }
+    public Map<String,List<ProductosBajoStockDTO>> mostrarListaProductos(int IDNotificacion){
+        return notificacion.MostrarListaProductosStockBajo(IDNotificacion);
+    }
+    public boolean NotificacionLeida(int IDNotificacion){
+        return notificacion.NotificacionLeida(IDNotificacion);
+    } 
 }

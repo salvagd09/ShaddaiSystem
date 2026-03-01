@@ -40,6 +40,7 @@ ALTER TABLE Usuarios ADD COLUMN username VARCHAR(200) UNIQUE;
 ALTER TABLE Usuarios ADD CONSTRAINT UNIQUE(Contrasena);
 ALTER TABLE Venta MODIFY Tipo_Comprobante enum("Boleta","Factura");
 ALTER TABLE Detalles_TransferenciaTienda ADD COLUMN Subtotal_Stock DECIMAL(10,2);
+ALTER TABLE Notificacion MODIFY Mensaje TEXT;
 /*Procedimientos para registrar una transferencia de tipo CU05 así como sus detalles*/
 DELIMITER //
 CREATE PROCEDURE Registrar_Transferencia 

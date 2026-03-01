@@ -1,5 +1,6 @@
 Modelo\DTO\LoginResultDTO.class
 Vista\Login.class
+Vista\NotificacionStockTienda$2.class
 Modelo\Enum\EstadoCliente.class
 Modelo\Enum\EstadoNotificacion.class
 Modelo\DTO\RegistrarPedidoPendienteDTO.class
@@ -18,12 +19,15 @@ Vista\Area_Registrar_Transferencias$2.class
 Modelo\DAO\TransferenciaDAO.class
 Vista\Area_Registar_Cliente_Frecuente.class
 Vista\Area_Notificaciones.class
+Vista\ListaProductosBajoStock.class
 Modelo\DAO\VentaDAO.class
 Vista\ModuloVentas$6.class
 Modelo\DTO\ResultadoOperacionDTO.class
 Modelo\Entidad\Pedido.class
 Vista\ModuloVentas.class
+Vista\NotificacionStockAlmacen$1.class
 Modelo\DTO\DetallesPedidoConfirmadoDTO.class
+Vista\NotificacionStockAlmacen.class
 Vista\ModuloVentas$3.class
 Modelo\DAO\EmpleadoDAO.class
 Controlador\NotificacionesController.class
@@ -56,9 +60,11 @@ Controlador\VentaRegistroController.class
 Controlador\LoginController.class
 Modelo\Entidad\TransferenciaStock.class
 Modelo\Entidad\DetalleVenta.class
+Vista\NotificacionStockTienda.class
 Modelo\Entidad\Venta.class
 Modelo\Enum\TipoCliente.class
 Vista\ModuloVentas$5.class
+Vista\NotificacionStockTienda$1.class
 Vista\Area_Registrar_Transferencias$3.class
 Modelo\DAO\ProductoDAO.class
 Modelo\DAO\NotificacionDAO.class
@@ -68,8 +74,10 @@ Vista\Ventana_Principal_Administrador.class
 Modelo\DTO\VentaCategoriaDTO.class
 Modelo\Entidad\DetallePedido.class
 Modelo\Entidad\Categoria.class
+Vista\ListaProductosBajoStock$1.class
 Modelo\Enum\EstadoPedido.class
 Vista\ModuloVentas$2.class
 Modelo\DTO\ValidarCantidadAlmacenDTO.class
+Vista\NotificacionStockAlmacen$2.class
 Modelo\DTO\ValidarCantidadTiendaDTO.class
 Modelo\Entidad\Notificacion.class

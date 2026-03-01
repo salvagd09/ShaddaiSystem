@@ -4,6 +4,17 @@
  */
 package Vista;
 
+import Controlador.NotificacionesController;
+import Modelo.DTO.NotificacionDTO;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.sql.Date;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Usuario
@@ -11,16 +22,63 @@ package Vista;
 public class Area_Notificaciones extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Area_Notificaciones.class.getName());
-
-    /**
-     * Creates new form Area_Notificaciones
-     */
-    public Area_Notificaciones() {
+    private NotificacionesController notificaciones;
+    private JPanel notificacionTienda;
+    private int IDUsuario;
+    private JPanel notificacionAlmacen;
+    public Area_Notificaciones(int IDUsuario) {
         initComponents();
+        this.IDUsuario=IDUsuario;
         setLocationRelativeTo(null);
+        this.notificaciones=new NotificacionesController();
         setTitle("Área para observar notificaciones");
+        AreaNotificaciones.remove(jLabel1);
+        AreaNotificaciones.remove(FaltaNlb);
+        // Panel del título
+        JPanel panelTitulo = new JPanel();
+        panelTitulo.setBackground(new java.awt.Color(255, 125, 0));
+        panelTitulo.add(jLabel1);
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(panelTitulo, BorderLayout.NORTH);
+        getContentPane().add(AreaNotificaciones, BorderLayout.CENTER);
+        AreaNotificaciones.setLayout(new BoxLayout(AreaNotificaciones, BoxLayout.Y_AXIS));
+        AreaNotificaciones.add(Box.createRigidArea(new Dimension(0, 10)));
+        FaltaNlb.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        AreaNotificaciones.add(FaltaNlb); 
+        MostrarNotificaciones();
+        btnMenuPrincipal.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
     }
-
+    private void MostrarNotificaciones(){
+        List<NotificacionDTO> notificacionesM=notificaciones.mostrarNotificaciones();
+        for(NotificacionDTO notificacion:notificacionesM){
+            if(notificacion.getTitulo().equals("Alerta de bajo stock en tienda")){
+                 notificacionTienda=new NotificacionStockTienda(notificacion.getIDNotificacion(),notificacion.getTitulo(), (Date) notificacion.getFecha(),notificacion.getMensaje());
+                 AreaNotificaciones.add(Box.createRigidArea(new Dimension(0, 10)));
+                 AreaNotificaciones.add(notificacionTienda);
+            } else if(notificacion.getTitulo().equals("Alerta de bajo stock en almacen")){
+                 notificacionAlmacen=new NotificacionStockAlmacen(notificacion.getIDNotificacion(),notificacion.getTitulo(), (Date) notificacion.getFecha(),notificacion.getMensaje());
+                 AreaNotificaciones.add(Box.createRigidArea(new Dimension(0, 10)));
+                 AreaNotificaciones.add(notificacionAlmacen);
+            }
+        }
+         if(notificacionesM.isEmpty()){
+        FaltaNlb.setVisible(true);
+        } else {
+        FaltaNlb.setVisible(false);
+        }
+    }
+    public void verificarNotificaciones() {
+        boolean todasCerradas = true;
+        for (java.awt.Component comp : AreaNotificaciones.getComponents()) {
+            if (comp.isVisible() && (comp instanceof NotificacionStockTienda || comp instanceof NotificacionStockAlmacen)) {
+                todasCerradas = false;
+                break;
+            }
+        }
+        if (todasCerradas) {
+            FaltaNlb.setVisible(true);
+        }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,73 +88,82 @@ public class Area_Notificaciones extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        AreaNotificaciones = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        FaltaNlb = new javax.swing.JLabel();
+        btnMenuPrincipal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        AreaNotificaciones.setBackground(new java.awt.Color(255, 125, 0));
+
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook", 0, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Área de Notificaciones");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(227, 227, 227)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(736, Short.MAX_VALUE))
+        FaltaNlb.setFont(new java.awt.Font("Century Schoolbook", 0, 30)); // NOI18N
+        FaltaNlb.setForeground(new java.awt.Color(255, 255, 255));
+        FaltaNlb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        FaltaNlb.setText("No hay notificaciones que falten leer");
+
+        btnMenuPrincipal.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuPrincipal.setText("Volver al menú principal");
+        btnMenuPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMenuPrincipal.addActionListener(this::btnMenuPrincipalActionPerformed);
+
+        javax.swing.GroupLayout AreaNotificacionesLayout = new javax.swing.GroupLayout(AreaNotificaciones);
+        AreaNotificaciones.setLayout(AreaNotificacionesLayout);
+        AreaNotificacionesLayout.setHorizontalGroup(
+            AreaNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(FaltaNlb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(AreaNotificacionesLayout.createSequentialGroup()
+                .addGap(392, 392, 392)
+                .addComponent(btnMenuPrincipal)
+                .addContainerGap(404, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        AreaNotificacionesLayout.setVerticalGroup(
+            AreaNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AreaNotificacionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(746, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(161, 161, 161)
+                .addComponent(FaltaNlb, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 423, Short.MAX_VALUE)
+                .addComponent(btnMenuPrincipal)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(AreaNotificaciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(AreaNotificaciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPrincipalActionPerformed
+        int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer regresar a la pantalla principal?","Confirmación de regreso a la VP",JOptionPane.YES_NO_OPTION);
+        if(resultado==0){
+          this.dispose();
+         new Ventana_Principal_Vendedor(IDUsuario).setVisible(true); 
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Area_Notificaciones().setVisible(true));
-    }
+    }//GEN-LAST:event_btnMenuPrincipalActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AreaNotificaciones;
+    private javax.swing.JLabel FaltaNlb;
+    public javax.swing.JButton btnMenuPrincipal;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

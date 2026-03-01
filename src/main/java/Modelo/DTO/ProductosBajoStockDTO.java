@@ -19,6 +19,11 @@ public class ProductosBajoStockDTO {
         this.StockActual = StockActual;
         this.StockMinimo = StockMinimo;
     }
+    public ProductosBajoStockDTO(String Nombre, int StockActual, int StockMinimo) {
+        this.Nombre = Nombre;
+        this.StockActual = StockActual;
+        this.StockMinimo = StockMinimo;
+    }
     public String getTitulo() {
         return Titulo;
     }

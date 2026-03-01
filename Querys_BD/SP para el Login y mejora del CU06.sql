@@ -19,7 +19,7 @@ BEGIN
     IF new.Stock_Tienda<new.Stock_Minimo THEN
 		Select ID_Notificacion INTO var_id_tienda
 		FROM Notificacion
-		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en tienda'
+		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en tienda' AND Estado = 'No Leido'
 		LIMIT 1;
 		IF var_id_tienda IS NULL THEN 
 			INSERT INTO Notificacion(Titulo,Mensaje,Fecha,Estado) VALUES('Alerta de bajo stock en tienda',
@@ -32,7 +32,7 @@ BEGIN
     IF new.Stock_Almacen<new.Stock_Minimo THEN
     Select ID_Notificacion INTO var_id_almacen
 		FROM Notificacion
-		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en almacen'
+		Where Fecha=CURDATE() And Titulo='Alerta de bajo stock en almacen' AND Estado = 'No Leido'
 		LIMIT 1;
 		IF var_id_almacen IS NULL THEN 
 			INSERT INTO Notificacion(Titulo,Mensaje,Fecha,Estado) VALUES('Alerta de bajo stock en almacen',
@@ -51,13 +51,13 @@ BEGIN
 	Select ID_Notificacion,Titulo,Mensaje,Fecha FROM Notificacion WHERE Estado="No Leido";
 END //
 DELIMITER ;
-DELIMITER //
 /*Muestra los productos con bajo stock al hacer click en la notificación en Java*/
+DELIMITER //
 CREATE PROCEDURE Mostrar_Lista_ProductosBajoStock(IN P_ID_Notificacion INT)
 BEGIN
-		Select dn.Titulo,p.Nombre, dn.Stock_Actual,p.Stock_Minimo from Producto p
+		Select n.Titulo,p.Nombre, dn.Stock_Actual,p.Stock_Minimo from Producto p
         INNER JOIN Detalles_Notificacion dn ON dn.ID_Producto=p.ID_Producto 
-        INNER JOIN Notifcacion n ON n.ID_Notificacion=dn.ID_Notificacion
+        INNER JOIN Notificacion n ON n.ID_Notificacion=dn.ID_Notificacion
         WHERE dn.ID_Notificacion=P_ID_Notificacion AND dn.Stock_Actual<p.Stock_Minimo;
 END //
 DELIMITER ;
@@ -68,4 +68,8 @@ BEGIN
 	UPDATE Notificacion SET Estado="Leido" WHERE ID_Notificacion=P_ID_Notificacion;
 END //
 DELIMITER ;
-
+Select * from producto;
+Select * from notificacion;
+Select * from detalles_notificacion;
+CALL Mostrar_Notificaciones();
+CALL Mostrar_Lista_ProductosBajoStock(1);

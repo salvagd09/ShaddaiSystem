@@ -11,6 +11,8 @@ import java.util.List;
 import java.sql.*;
 import java.sql.CallableStatement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -32,9 +34,6 @@ public class NotificacionDAO {
                 NotificacionDTO notificacion=new NotificacionDTO(idNotificacion,Titulo,Mensaje,Fecha);
                 notificaciones.add(notificacion);
             }
-            if(notificaciones.isEmpty()){
-                return null;
-            }
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -42,20 +41,24 @@ public class NotificacionDAO {
         }
         return notificaciones;
     }
-    public List<ProductosBajoStockDTO> MostrarListaProductosStockBajo(int IDNotificacion){
-        String sql="CALL {Mostrar_Lista_ProductosBajoStock(?)}";
-        List<ProductosBajoStockDTO> productosBajos=new ArrayList<>();
+    public Map<String,List<ProductosBajoStockDTO>> MostrarListaProductosStockBajo(int IDNotificacion){
+        String sql="{CALL Mostrar_Lista_ProductosBajoStock(?)}";
+        Map<String,List<ProductosBajoStockDTO>> productosBajos=new HashMap<>();
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = conn.prepareCall(sql)){
             stmt.setInt(1, IDNotificacion);
             ResultSet rs=stmt.executeQuery();
+            String titulo=null;
             while(rs.next()){
+                if(titulo==null){
+                    titulo=rs.getString("Titulo");
+                    productosBajos.put(titulo,new ArrayList<>());
+                }
                 int Stock_Actual=rs.getInt("Stock_Actual");
-                String Titulo=rs.getString("Titulo");
                 String Nombre=rs.getString("Nombre");
                 int Stock_Minimo=rs.getInt("Stock_Minimo");
-                ProductosBajoStockDTO productoBajo=new ProductosBajoStockDTO(Titulo,Nombre,Stock_Actual,Stock_Minimo);
-                productosBajos.add(productoBajo);
+                ProductosBajoStockDTO productoBajo=new ProductosBajoStockDTO(Nombre,Stock_Actual,Stock_Minimo);
+                productosBajos.get(titulo).add(productoBajo);
             }
             if(productosBajos.isEmpty()){
                 return null;
@@ -68,7 +71,7 @@ public class NotificacionDAO {
         return productosBajos;
     }
     public boolean NotificacionLeida(int IDNotificacion){
-       String sql="CALL {Notificacion_Leida(?)}";
+       String sql="{CALL Notificacion_Leida(?)}";
        try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = conn.prepareCall(sql)){
            stmt.setInt(1, IDNotificacion);
