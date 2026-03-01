@@ -153,6 +153,11 @@ public class ModuloVentas extends javax.swing.JFrame {
         jLabel5.setText("DNI:");
 
         txtDni.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDni.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDniKeyPressed(evt);
+            }
+        });
 
         labelRuc.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelRuc.setText("RUC:");
@@ -211,6 +216,11 @@ public class ModuloVentas extends javax.swing.JFrame {
         btnFinalizarVenta.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnFinalizarVenta.setText(" Finalizar Venta");
         btnFinalizarVenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFinalizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarVentaActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnAgregar.setText("Agregar al carrito");
@@ -421,6 +431,14 @@ public class ModuloVentas extends javax.swing.JFrame {
                 return;
             }
     }//GEN-LAST:event_btnPagoPedidoConfirmadoActionPerformed
+
+    private void btnFinalizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFinalizarVentaActionPerformed
+
+    private void txtDniKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDniKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

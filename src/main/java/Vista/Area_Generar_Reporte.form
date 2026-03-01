@@ -51,7 +51,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="317" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="220" max="-2" attributes="0"/>
+                          <Component id="FinalizarBtn" min="-2" pref="220" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="354" max="-2" attributes="0"/>
@@ -135,7 +135,7 @@
                   <EmptySpace pref="15" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="159" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" pref="39" max="-2" attributes="0"/>
+                  <Component id="FinalizarBtn" min="-2" pref="39" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -224,13 +224,16 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GenerarReporteBtnActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="FinalizarBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Finalizar Visualizaci&#xf3;n"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FinalizarBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="com.toedter.calendar.JCalendar" name="fecha_hoy">
           <Properties>

@@ -144,10 +144,10 @@ public class VentaDAO {
     }
 
     public DatosParaClienteFrecuenteDTO ContabilizarVentasMes(String DNI,String RUC){
-        String sql="{CALL Contabilizar_Compras_Mes(?,?)}";
+        String sql="{CALL Contabilizar_Ventas_Mes(?,?)}";
         try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt =  conn.prepareCall(sql)){
-            if(DNI!= null && !RUC.isEmpty()){
+            if(DNI!= null && !DNI.isEmpty()){
                 stmt.setString(1, DNI);
             }
             else {
@@ -162,7 +162,7 @@ public class VentaDAO {
              ResultSet rs=stmt.executeQuery();
              if(rs.next()){
                  return new DatosParaClienteFrecuenteDTO(rs.getString("Nombre_Cliente"),
-                 rs.getInt("ID_Venta"),rs.getDate("Fecha"),rs.getInt("Total_Compra_Mes"));
+                 rs.getInt("Total_Compras_Mes"));
              }
          }
         catch(SQLException e){

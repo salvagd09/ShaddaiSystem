@@ -22,6 +22,12 @@ public class DatosParaClienteFrecuenteDTO {
         this.Fecha = Fecha;
         this.TotalCompraMes = TotalCompraMes;
     }
+
+    public DatosParaClienteFrecuenteDTO(String NombreCliente, int TotalCompraMes) {
+        this.NombreCliente = NombreCliente;
+        this.TotalCompraMes = TotalCompraMes;
+    }
+    
     public DatosParaClienteFrecuenteDTO(String mensajeError){
         this.mensaje=mensajeError;
         this.NombreCliente=null;

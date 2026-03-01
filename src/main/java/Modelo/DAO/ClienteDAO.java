@@ -33,18 +33,25 @@ public class ClienteDAO {
         }
    }
    public MostrarDatosClienteDTO MostrarDatosClientes(TipoCliente tCliente,String DNI){
-       String sql="{CALL Registrar_Cliente_Frecuente(?,?)}";
+       String sql="{CALL Mostrar_Datos_Cliente(?,?)}";
        try (Connection conn = new dbConexion().conectar();
         CallableStatement stmt = (CallableStatement) conn.prepareCall(sql)){
            stmt.setString(1, tCliente.name());
            stmt.setString(2,DNI);
            ResultSet rs=stmt.executeQuery();
            if(rs.next()){
-               String estado=rs.getString("Estado");
-               if("OK".equals("Estado")){
-                   return new MostrarDatosClienteDTO(true,rs.getString("Mensaje"),rs.getString("RUC"),rs.getString("NombreCompleto"));
-               }               
-           }
+            String estado = rs.getString("Estado");
+            if("OK".equals(estado)){ 
+                return new MostrarDatosClienteDTO(
+                    true,
+                    rs.getString("Mensaje"),
+                    rs.getString("RUC"),
+                    rs.getString("NombreCompleto")
+                );
+            } else {
+                return new MostrarDatosClienteDTO(false, rs.getString("Mensaje"), null, null);
+            }
+        }
        }catch(SQLException e){
             e.printStackTrace();
             return new MostrarDatosClienteDTO("Error en la BD:"+e.getMessage());

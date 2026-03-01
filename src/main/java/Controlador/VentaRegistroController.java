@@ -5,19 +5,24 @@
 package Controlador;
 
 
+import Modelo.DAO.ClienteDAO;
 import Modelo.DAO.PedidoDAO;
 import Modelo.DAO.ProductoDAO;
 import Modelo.DAO.VentaDAO;
+import Modelo.DTO.DatosParaClienteFrecuenteDTO;
 import Modelo.DTO.DetallesPedidoConfirmadoDTO;
+import Modelo.DTO.MostrarDatosClienteDTO;
 import Modelo.DTO.ResultadoOperacionDTO;
 import Modelo.Entidad.Cliente;
 import Modelo.Entidad.DetalleVenta;
 import Modelo.Entidad.Producto;
+import Modelo.Enum.TipoCliente;
 import Vista.Login;
 import Vista.ModuloVentas;
 import Vista.Ventana_Principal_Vendedor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -32,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
     private ModuloVentas vista;
     private VentaDAO ventaDAO;
     private PedidoDAO pedidoDAO; 
+    private ClienteDAO clienteDAO;
     private ProductoDAO productoDAO;
     private List<DetalleVenta> carrito;
     private double totalVenta = 0;
@@ -43,6 +49,7 @@ import javax.swing.table.DefaultTableModel;
         this.ventaDAO = new VentaDAO();
         this.productoDAO = new ProductoDAO();
         this.pedidoDAO = new PedidoDAO();
+        this.clienteDAO=new ClienteDAO();
         this.carrito = new ArrayList<>();
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Código");
@@ -56,6 +63,7 @@ import javax.swing.table.DefaultTableModel;
         this.vista.btnFinalizarVenta.addActionListener(this);
         this.vista.btnRegistrarWhatsapp.addActionListener(this);
         this.vista.btnMenuPrincipal.addActionListener(this);
+        this.vista.txtDni.addActionListener(this);
     }
 
     @Override
@@ -70,7 +78,9 @@ import javax.swing.table.DefaultTableModel;
             volverMenuPrincipal();
         }  else if (e.getSource() == vista.btnPagoPedidoConfirmado) {
             PagoPedidoConfirmado();
-    }
+        } else if(e.getSource()==vista.txtDni){
+            ObtenerClienteAnterior();
+        }
     }
     private void volverMenuPrincipal() {
         int resultado=JOptionPane.showConfirmDialog(null,"Estás seguro de querer regresar a la pantalla principal?","Confirmación de regreso a la VP",JOptionPane.YES_NO_OPTION);
@@ -78,6 +88,22 @@ import javax.swing.table.DefaultTableModel;
           vista.dispose();
          new Ventana_Principal_Vendedor(idUsuario).setVisible(true); 
         }
+    }
+    private void ObtenerClienteAnterior(){
+             if(vista.rbPersona.isSelected()){
+                MostrarDatosClienteDTO mostrar=clienteDAO.MostrarDatosClientes(TipoCliente.PERSONA, vista.txtDni.getText());
+                vista.txtNombreCliente.setText(mostrar.getNombreCompleto());
+                JOptionPane.showMessageDialog(vista, mostrar.getMensaje());
+                DatosParaClienteFrecuenteDTO ventasRealizadas=ventaDAO.ContabilizarVentasMes(vista.txtDni.getText(),null);
+                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras");
+             } else if(vista.rbEmpresa.isSelected()){
+                MostrarDatosClienteDTO mostrar=clienteDAO.MostrarDatosClientes(TipoCliente.EMPRESA, vista.txtDni.getText());
+                vista.txtNombreCliente.setText(mostrar.getNombreCompleto());
+                vista.RUCText.setText(mostrar.getRUC());
+                DatosParaClienteFrecuenteDTO ventasRealizadas=ventaDAO.ContabilizarVentasMes(vista.txtDni.getText(), vista.RUCText.getText());
+                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras");
+             }
+       
     }
     private void PagoPedidoConfirmado() {                                                        
             String dni = vista.txtDni.getText().trim();
@@ -206,6 +232,7 @@ import javax.swing.table.DefaultTableModel;
             }
         }
         if (exito) {
+            generarPDF();
             JOptionPane.showMessageDialog(vista, "Venta registrada con éxito");
             ((DefaultTableModel) vista.tblVentas.getModel()).setRowCount(0);
             carrito.clear();
@@ -261,6 +288,80 @@ import javax.swing.table.DefaultTableModel;
             
         } else {
             JOptionPane.showMessageDialog(vista, "error al registrar el pedido pendiente en la bd.");
+        }
+    }
+
+    private void generarPDF() {
+        String comprobante=vista.rbBoleta.isSelected()?"Boleta":"Factura";
+        String tipoCliente=vista.rbEmpresa.isSelected()?"Empresa":"Persona";
+        String metodoPago=vista.rbYape.isSelected()?"Yape/Plin":"Efectivo";
+      try{
+      javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setSelectedFile(new java.io.File("ComprobanteVenta.pdf"));
+        int opcion = fileChooser.showSaveDialog(vista);
+        if (opcion != javax.swing.JFileChooser.APPROVE_OPTION) return;
+        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+        if (!ruta.endsWith(".pdf")) ruta += ".pdf";
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(ruta));
+        document.open();
+        com.itextpdf.text.Font fuenteTitulo = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 24, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Paragraph titulo = new com.itextpdf.text.Paragraph(
+        "Comprobante de Ventas", fuenteTitulo);
+        titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        document.add(titulo);
+        String fechaFormateada = new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy, HH:mm:ss", 
+         new java.util.Locale("es", "PE")).format(new java.util.Date());
+        document.add(new com.itextpdf.text.Paragraph("Gracias por su preferencia!!!"));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        document.add(new com.itextpdf.text.Paragraph("Fecha: " +fechaFormateada));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        document.add(new com.itextpdf.text.Paragraph("Tipo de comprobante: " +comprobante));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        document.add(new com.itextpdf.text.Paragraph("Nombre del cliente:"+vista.txtNombreCliente.getText()));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        if("Persona".equals(tipoCliente)){
+            document.add(new com.itextpdf.text.Paragraph("DNI del cliente:"+vista.txtDni.getText()));
+            document.add(com.itextpdf.text.Chunk.NEWLINE);
+        }
+        else if("Empresa".equals(tipoCliente)){
+            document.add(new com.itextpdf.text.Paragraph("DNI del cliente:"+vista.txtDni.getText()));
+            document.add(com.itextpdf.text.Chunk.NEWLINE);
+            document.add(new com.itextpdf.text.Paragraph("RUC del cliente:"+vista.RUCText.getText()));
+            document.add(com.itextpdf.text.Chunk.NEWLINE);
+        }
+        com.itextpdf.text.Paragraph subtitulo=new com.itextpdf.text.Paragraph("Productos comprados:");
+        subtitulo.setSpacingBefore(5f);
+        subtitulo.setSpacingAfter(5f);
+        document.add(subtitulo);
+        com.itextpdf.text.pdf.PdfPTable tabla = new com.itextpdf.text.pdf.PdfPTable(5);
+        tabla.addCell("Codigo");
+        tabla.addCell("Producto");
+        tabla.addCell("Cantidad");
+        tabla.addCell("Precio unitario");
+        tabla.addCell("Subtotal");
+        DefaultTableModel model = (DefaultTableModel) vista.tblVentas.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            tabla.addCell(model.getValueAt(i, 0).toString());
+            tabla.addCell(model.getValueAt(i, 1).toString());
+            tabla.addCell(model.getValueAt(i, 2).toString());
+            tabla.addCell(model.getValueAt(i, 3).toString());
+            tabla.addCell(model.getValueAt(i, 4).toString());
+        }
+        document.add(tabla);
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        com.itextpdf.text.Font fuenteTotal = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD, new com.itextpdf.text.BaseColor(255, 214, 210));
+        document.add(new com.itextpdf.text.Paragraph("Total de la venta:"+vista.txtTotal.getText(),fuenteTotal));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        document.add(new com.itextpdf.text.Paragraph("Método de pago:"+metodoPago));
+        document.close();
+        JOptionPane.showMessageDialog(vista, "PDF generado exitosamente en:\n" + ruta);
+      }
+       catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(vista, "Error al generar el PDF: " + e.getMessage());
         }
     }
 }

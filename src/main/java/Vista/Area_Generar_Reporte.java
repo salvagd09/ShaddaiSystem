@@ -24,6 +24,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+
 /**
  *
  * @author Usuario
@@ -61,7 +62,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         Categoria = new javax.swing.JComboBox<>();
         Vendedores = new javax.swing.JComboBox<>();
         GenerarReporteBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        FinalizarBtn = new javax.swing.JButton();
         fecha_hoy = new com.toedter.calendar.JCalendar();
         btnMenuPrincipal = new javax.swing.JButton();
         panelBarras = new javax.swing.JPanel();
@@ -96,8 +97,9 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         GenerarReporteBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         GenerarReporteBtn.addActionListener(this::GenerarReporteBtnActionPerformed);
 
-        jButton2.setText("Finalizar Visualización");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        FinalizarBtn.setText("Finalizar Visualización");
+        FinalizarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        FinalizarBtn.addActionListener(this::FinalizarBtnActionPerformed);
 
         fecha_hoy.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
@@ -160,7 +162,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(317, 317, 317)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(FinalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(354, 354, 354)
                         .addComponent(GenerarReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -223,7 +225,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(FinalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -295,6 +297,13 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
             model.addRow(new Object[]{vv.getVendedor(),vv.getCantidadVentas(),vv.getMontoTotal()});
         }
     }//GEN-LAST:event_GenerarReporteBtnActionPerformed
+
+    private void FinalizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarBtnActionPerformed
+        int resultado=JOptionPane.showConfirmDialog(null,"Deseas obtener un PDF del reporte?");
+        if(resultado==0){
+            generarPDF();
+        }
+    }//GEN-LAST:event_FinalizarBtnActionPerformed
     private void LlenarCategorias(){
         Categoria.removeAllItems();
         Categoria.addItem("--Ninguna--");
@@ -314,12 +323,12 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Categoria;
+    private javax.swing.JButton FinalizarBtn;
     private javax.swing.JButton GenerarReporteBtn;
     private javax.swing.JTable TablaVendedor;
     private javax.swing.JComboBox<String> Vendedores;
     public javax.swing.JButton btnMenuPrincipal;
     private com.toedter.calendar.JCalendar fecha_hoy;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -329,4 +338,65 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
     private javax.swing.JPanel panelBarras;
     private javax.swing.JPanel panelPie;
     // End of variables declaration//GEN-END:variables
+
+    private void generarPDF() {
+            try {
+        // Elegir dónde guardar el PDF
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setSelectedFile(new java.io.File("ReporteVentas.pdf"));
+        int opcion = fileChooser.showSaveDialog(this);
+        if (opcion != javax.swing.JFileChooser.APPROVE_OPTION) return;
+        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+        if (!ruta.endsWith(".pdf")) ruta += ".pdf";
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(ruta));
+        document.open();
+        // Título
+        com.itextpdf.text.Font fuenteTitulo = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD);
+        document.add(new com.itextpdf.text.Paragraph("Reporte de Ventas", fuenteTitulo));
+        String fechaFormateada = new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy, HH:mm:ss", 
+         new java.util.Locale("es", "PE")).format(new java.util.Date());
+        document.add(new com.itextpdf.text.Paragraph("Fecha: " +fechaFormateada));
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        // Tabla de vendedores
+        com.itextpdf.text.Paragraph subtitulo=new com.itextpdf.text.Paragraph("Ventas por vendedor:");
+        subtitulo.setSpacingAfter(5f);
+        document.add(subtitulo);
+        com.itextpdf.text.pdf.PdfPTable tabla = new com.itextpdf.text.pdf.PdfPTable(3);
+        tabla.addCell("Vendedor");
+        tabla.addCell("Cantidad de Ventas");
+        tabla.addCell("Monto Total");
+        DefaultTableModel model = (DefaultTableModel) TablaVendedor.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            tabla.addCell(model.getValueAt(i, 0).toString());
+            tabla.addCell(model.getValueAt(i, 1).toString());
+            tabla.addCell(model.getValueAt(i, 2).toString());
+        }
+        document.add(tabla);
+        document.add(com.itextpdf.text.Chunk.NEWLINE);
+        document.add(new com.itextpdf.text.Paragraph("Ventas por Producto:"));
+        java.awt.image.BufferedImage imgBarras = panelBarras.getComponent(0) instanceof ChartPanel ?
+            ((ChartPanel) panelBarras.getComponent(0)).getChart().createBufferedImage(400, 200) : null;
+        if (imgBarras != null) {
+            com.itextpdf.text.Image iBarras = com.itextpdf.text.Image.getInstance(imgBarras, null);
+            iBarras.scaleToFit(400, 200);
+            document.add(iBarras);
+        }
+        document.add(new com.itextpdf.text.Paragraph("Ventas por Categoría:"));
+        java.awt.image.BufferedImage imgPie = panelPie.getComponent(0) instanceof ChartPanel ?
+            ((ChartPanel) panelPie.getComponent(0)).getChart().createBufferedImage(300, 200) : null;
+        if (imgPie != null) {
+            com.itextpdf.text.Image iPie = com.itextpdf.text.Image.getInstance(imgPie, null);
+            iPie.scaleToFit(300, 200);
+            document.add(iPie);
+        }
+        document.close();
+        JOptionPane.showMessageDialog(this, "PDF generado exitosamente en:\n" + ruta);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage());
+    }
+    }
 }
