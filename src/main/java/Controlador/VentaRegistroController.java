@@ -95,13 +95,22 @@ import javax.swing.table.DefaultTableModel;
                 vista.txtNombreCliente.setText(mostrar.getNombreCompleto());
                 JOptionPane.showMessageDialog(vista, mostrar.getMensaje());
                 DatosParaClienteFrecuenteDTO ventasRealizadas=ventaDAO.ContabilizarVentasMes(vista.txtDni.getText(),null);
-                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras");
+                if(mostrar.getNombreCompleto()==null){
+                    JOptionPane.showMessageDialog(vista, "No existe ese cliente de tipo persona.Se generara uno nuevo con esta venta");
+                    return;
+                }
+                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras en los últimos 30 días");
+                     JOptionPane.showMessageDialog(vista, "No existe ese cliente de tipo persona. Se generara uno nuevo con esta venta");
              } else if(vista.rbEmpresa.isSelected()){
                 MostrarDatosClienteDTO mostrar=clienteDAO.MostrarDatosClientes(TipoCliente.EMPRESA, vista.txtDni.getText());
+                if(mostrar.getNombreCompleto()==null){
+                    JOptionPane.showMessageDialog(vista, "No existe ese cliente de tipo empresa.Se generara uno nuevo con esta venta");
+                    return;
+                }
                 vista.txtNombreCliente.setText(mostrar.getNombreCompleto());
                 vista.RUCText.setText(mostrar.getRUC());
                 DatosParaClienteFrecuenteDTO ventasRealizadas=ventaDAO.ContabilizarVentasMes(vista.txtDni.getText(), vista.RUCText.getText());
-                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras");
+                JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras en los últimos 30 días");  
              }
        
     }

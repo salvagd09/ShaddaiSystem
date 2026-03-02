@@ -42,6 +42,8 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         setTitle("Área para generar reporte de ventas");
         this.reporte=new ReporteVentasController();
         LlenarCategorias();
+        FinalizarBtn.setVisible(false);
+        fecha_hoy.setMaxSelectableDate(new Date());
         LlenarVendedores();
     }
 
@@ -63,12 +65,12 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         Vendedores = new javax.swing.JComboBox<>();
         GenerarReporteBtn = new javax.swing.JButton();
         FinalizarBtn = new javax.swing.JButton();
-        fecha_hoy = new com.toedter.calendar.JCalendar();
         btnMenuPrincipal = new javax.swing.JButton();
         panelBarras = new javax.swing.JPanel();
         panelPie = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaVendedor = new javax.swing.JTable();
+        fecha_hoy = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,14 +80,14 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Área de Generar Reportes");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel2.setText("Categoría de los productos:");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Categoría específica de los productos:");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel3.setText("Nombre del vendedor");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Vendedor en específico:");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel4.setText("Fecha de ventas");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Día especifico de ventas:");
 
         Categoria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -101,8 +103,6 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         FinalizarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         FinalizarBtn.addActionListener(this::FinalizarBtnActionPerformed);
 
-        fecha_hoy.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-
         btnMenuPrincipal.setText("Regresar al menú principal");
         btnMenuPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnMenuPrincipal.addActionListener(this::btnMenuPrincipalActionPerformed);
@@ -113,11 +113,11 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         panelBarras.setLayout(panelBarrasLayout);
         panelBarrasLayout.setHorizontalGroup(
             panelBarrasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
         panelBarrasLayout.setVerticalGroup(
             panelBarrasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
+            .addGap(0, 310, Short.MAX_VALUE)
         );
 
         panelPie.setMaximumSize(new java.awt.Dimension(360, 172));
@@ -162,67 +162,66 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(317, 317, 317)
-                        .addComponent(FinalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(354, 354, 354)
-                        .addComponent(GenerarReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(FinalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(panelBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(panelPie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(Vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(33, 33, 33)
-                                .addComponent(Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(327, 327, 327)
-                                .addComponent(Vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(GenerarReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fecha_hoy, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(fecha_hoy, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(298, 298, 298)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                        .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(fecha_hoy, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(GenerarReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4))
+                    .addComponent(fecha_hoy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(GenerarReporteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelBarras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelPie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(FinalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,6 +257,11 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         String nombreCategoriaFiltro=nombreCategoria.equals("--Ninguna")? null:nombreCategoria;
         String nombreVendedorFiltro=nombreVendedor.equals("--Ninguno--")? null:nombreVendedor;
         Date Fecha=fecha_hoy.getDate();
+        if(Fecha==null){
+            JOptionPane.showMessageDialog(null, "No se puede generar el reporte. Se necesita de una fecha");
+            return;
+        }
+        ((DefaultTableModel) TablaVendedor.getModel()).setRowCount(0);
         ReporteVentasDTO reporteV=reporte.GenerarReporteVenta(nombreCategoriaFiltro, nombreVendedorFiltro, Fecha);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(VentaProductosDTO vp:reporteV.getVentasPorProducto()){
@@ -270,7 +274,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         barrasPanel.setMinimumDrawHeight(0);
         barrasPanel.setMaximumDrawWidth(Integer.MAX_VALUE);
         barrasPanel.setMaximumDrawHeight(Integer.MAX_VALUE);
-        barrasPanel.setPreferredSize(new Dimension(panelBarras.getWidth(), panelBarras.getHeight()));
+        barrasPanel.setPreferredSize(new Dimension(470, 310));
         panelBarras.removeAll();
         panelBarras.setLayout(new BorderLayout());
         panelBarras.add(barrasPanel,BorderLayout.CENTER);
@@ -286,7 +290,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         piePanel.setMaximumDrawWidth(0);
         piePanel.setMaximumDrawHeight(Integer.MAX_VALUE);
         piePanel.setMaximumDrawWidth(Integer.MAX_VALUE);
-        piePanel.setPreferredSize(new Dimension(panelPie.getWidth(), panelPie.getHeight()));
+        piePanel.setPreferredSize(new Dimension(463, 310));
         panelPie.removeAll();
         panelPie.setLayout(new BorderLayout());
         panelPie.add(piePanel,BorderLayout.CENTER);
@@ -296,13 +300,24 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         for(VentasVendedorDTO vv:reporteV.getVentasPorVendedor()){
             model.addRow(new Object[]{vv.getVendedor(),vv.getCantidadVentas(),vv.getMontoTotal()});
         }
+        FinalizarBtn.setVisible(true);
     }//GEN-LAST:event_GenerarReporteBtnActionPerformed
 
     private void FinalizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarBtnActionPerformed
-        int resultado=JOptionPane.showConfirmDialog(null,"Deseas obtener un PDF del reporte?");
+        int resultado=JOptionPane.showConfirmDialog(null,"Deseas obtener un PDF del reporte?","Confirmar PDF",JOptionPane.YES_NO_OPTION);
         if(resultado==0){
             generarPDF();
         }
+        panelBarras.removeAll();
+        panelBarras.setLayout(new BorderLayout());
+        panelBarras.revalidate();
+        panelBarras.repaint();
+        panelPie.removeAll();
+        panelPie.setLayout(new BorderLayout());
+        panelPie.revalidate();
+        panelPie.repaint();
+        ((DefaultTableModel) TablaVendedor.getModel()).setRowCount(0);
+        FinalizarBtn.setVisible(false);
     }//GEN-LAST:event_FinalizarBtnActionPerformed
     private void LlenarCategorias(){
         Categoria.removeAllItems();
@@ -328,7 +343,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
     private javax.swing.JTable TablaVendedor;
     private javax.swing.JComboBox<String> Vendedores;
     public javax.swing.JButton btnMenuPrincipal;
-    private com.toedter.calendar.JCalendar fecha_hoy;
+    private com.toedter.calendar.JDateChooser fecha_hoy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -393,7 +408,7 @@ public class Area_Generar_Reporte extends javax.swing.JFrame {
         }
         document.close();
         JOptionPane.showMessageDialog(this, "PDF generado exitosamente en:\n" + ruta);
-
+        FinalizarBtn.setVisible(true);
     } catch (Exception e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage());

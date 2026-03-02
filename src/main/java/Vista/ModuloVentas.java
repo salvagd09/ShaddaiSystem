@@ -13,6 +13,41 @@ public class ModuloVentas extends javax.swing.JFrame {
         setTitle("Área para registrar ventas");
         this.idUsuarioLogueado = idUsuario;
         new Controlador.VentaRegistroController(this, idUsuarioLogueado);
+        TipoCliente.clearSelection();
+        TipoComprobante.clearSelection();
+        TipoMPago.clearSelection();
+        TipoPedido.clearSelection();
+        rbTienda.setSelected(false);
+        rbWhatsapp.setSelected(false);
+        rbPersona.setSelected(false);
+        rbEmpresa.setSelected(false);
+        rbYape.setSelected(false);
+        RUCText.setVisible(false);
+        labelRuc.setVisible(false);
+        rbEfectivo.setSelected(false);
+        rbBoleta.setSelected(false);
+        rbFactura.setSelected(false);
+        /*Para que no se puedan ingresar mas de 8 digitos para el campo txtDNI*/
+        txtDni.setDocument(new javax.swing.text.PlainDocument() {
+         @Override
+        public void insertString(int offs, String str, javax.swing.text.AttributeSet a) 
+        throws javax.swing.text.BadLocationException {
+        if (str == null) return;
+        if ((getLength() + str.length()) <= 8) { 
+            super.insertString(offs, str, a);
+        }
+        }
+        });
+        RUCText.setDocument(new javax.swing.text.PlainDocument() {
+         @Override
+        public void insertString(int offs, String str, javax.swing.text.AttributeSet a) 
+        throws javax.swing.text.BadLocationException {
+        if (str == null) return;
+        if ((getLength() + str.length()) <= 11) { 
+            super.insertString(offs, str, a);
+        }
+        }
+        });
     }
     private void elementosDesactivadosTipoCliente(){
         if(rbPersona.isSelected()){
@@ -28,7 +63,7 @@ public class ModuloVentas extends javax.swing.JFrame {
             btnPagoPedidoConfirmado.setVisible(false);
             btnRegistrarWhatsapp.setVisible(false);
         } else if(rbWhatsapp.isSelected()){
-             btnPagoPedidoConfirmado.setVisible(true);
+            btnPagoPedidoConfirmado.setVisible(true);
             btnRegistrarWhatsapp.setVisible(true);
         }
     }
@@ -41,10 +76,10 @@ public class ModuloVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        buttonGroup4 = new javax.swing.ButtonGroup();
+        TipoPedido = new javax.swing.ButtonGroup();
+        TipoCliente = new javax.swing.ButtonGroup();
+        TipoMPago = new javax.swing.ButtonGroup();
+        TipoComprobante = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         btnMenuPrincipal = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -98,7 +133,7 @@ public class ModuloVentas extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Tipo de Pedido:");
 
-        buttonGroup1.add(rbTienda);
+        TipoPedido.add(rbTienda);
         rbTienda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbTienda.setSelected(true);
         rbTienda.setText("Tienda");
@@ -108,7 +143,7 @@ public class ModuloVentas extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup1.add(rbWhatsapp);
+        TipoPedido.add(rbWhatsapp);
         rbWhatsapp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbWhatsapp.setText("Whatsapp");
         rbWhatsapp.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +155,7 @@ public class ModuloVentas extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Tipo de Cliente:");
 
-        buttonGroup2.add(rbPersona);
+        TipoCliente.add(rbPersona);
         rbPersona.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbPersona.setSelected(true);
         rbPersona.setText("Persona");
@@ -130,7 +165,7 @@ public class ModuloVentas extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup2.add(rbEmpresa);
+        TipoCliente.add(rbEmpresa);
         rbEmpresa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbEmpresa.setText("Empresa");
         rbEmpresa.addActionListener(new java.awt.event.ActionListener() {
@@ -192,23 +227,23 @@ public class ModuloVentas extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel11.setText("Metodo de Pago:");
 
-        buttonGroup3.add(rbYape);
+        TipoMPago.add(rbYape);
         rbYape.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbYape.setSelected(true);
         rbYape.setText("Yape/Plin");
 
-        buttonGroup3.add(rbEfectivo);
+        TipoMPago.add(rbEfectivo);
         rbEfectivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbEfectivo.setText("Efectivo");
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Comprobante de Pago:");
 
-        buttonGroup4.add(rbFactura);
+        TipoComprobante.add(rbFactura);
         rbFactura.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbFactura.setText("Factura");
 
-        buttonGroup4.add(rbBoleta);
+        TipoComprobante.add(rbBoleta);
         rbBoleta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rbBoleta.setSelected(true);
         rbBoleta.setText("Boleta");
@@ -443,15 +478,15 @@ public class ModuloVentas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField RUCText;
+    public javax.swing.ButtonGroup TipoCliente;
+    public javax.swing.ButtonGroup TipoComprobante;
+    public javax.swing.ButtonGroup TipoMPago;
+    public javax.swing.ButtonGroup TipoPedido;
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnFinalizarVenta;
     public javax.swing.JButton btnMenuPrincipal;
     public javax.swing.JButton btnPagoPedidoConfirmado;
     public javax.swing.JButton btnRegistrarWhatsapp;
-    public javax.swing.ButtonGroup buttonGroup1;
-    public javax.swing.ButtonGroup buttonGroup2;
-    public javax.swing.ButtonGroup buttonGroup3;
-    public javax.swing.ButtonGroup buttonGroup4;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel11;

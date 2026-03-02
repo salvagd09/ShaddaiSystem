@@ -97,3 +97,4 @@ BEGIN
 	END IF;
 END //
 DELIMITER ;
+Select * from cliente;

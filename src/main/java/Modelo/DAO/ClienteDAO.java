@@ -96,7 +96,7 @@ public class ClienteDAO {
         modelo.addColumn("ID Venta");
         modelo.addColumn("Fecha de Compra");
         modelo.addColumn("Nombre Cliente"); 
-        String sql = "{CALL Contabilizar_Compras_Mes(?, ?)}";
+        String sql = "{CALL Obtener_Historial_Ventas(?, ?)}";
         try {
             Connection conn = new dbConexion().conectar();
             java.sql.CallableStatement stmt = conn.prepareCall(sql);

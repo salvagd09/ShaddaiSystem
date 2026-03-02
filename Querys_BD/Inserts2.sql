@@ -102,8 +102,8 @@ BEGIN
         SELECT ID_Cliente INTO v_ID_Cliente FROM Cliente WHERE RUC = P_RUC_Cliente LIMIT 1;
         
         IF v_ID_Cliente IS NULL THEN
-            INSERT INTO Cliente (RUC, NombreCompleto, Tipo_Cliente, Estado) 
-            VALUES (P_RUC_Cliente, IFNULL(P_Nombre_Cliente, 'Empresa Sin Nombre'), 'Empresa', 'No Frecuente');
+            INSERT INTO Cliente (DNI,RUC, NombreCompleto, Tipo_Cliente, Estado) 
+            VALUES (P_DNI_Cliente,P_RUC_Cliente, IFNULL(P_Nombre_Cliente, 'Empresa Sin Nombre'), 'Empresa', 'No Frecuente');
             SET v_ID_Cliente = LAST_INSERT_ID();
         END IF;
     END IF;
