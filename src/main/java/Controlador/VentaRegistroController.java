@@ -100,7 +100,6 @@ import javax.swing.table.DefaultTableModel;
                     return;
                 }
                 JOptionPane.showMessageDialog(vista, mostrar.getMensaje()+".El cliente ha realizado: "+ventasRealizadas.getTotalCompraMes()+" compras en los últimos 30 días");
-                     JOptionPane.showMessageDialog(vista, "No existe ese cliente de tipo persona. Se generara uno nuevo con esta venta");
              } else if(vista.rbEmpresa.isSelected()){
                 MostrarDatosClienteDTO mostrar=clienteDAO.MostrarDatosClientes(TipoCliente.EMPRESA, vista.txtDni.getText());
                 if(mostrar.getNombreCompleto()==null){
