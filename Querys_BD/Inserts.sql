@@ -28,3 +28,7 @@ VALUES ('PROD-004', 'Tapa Rosca 28mm Blanca',300, 1000,'Unidad',  0.30, 100, 4),
 ('PROD-008', 'Cuchara Plástica Reutilizable',180, 600, 'Unidad',  0.90,  60, 8),
 ('PROD-009', 'Contenedor Hermético 2 Litros',90, 300, 'Unidad',  6.50,  30, 9),
 ('PROD-010', 'Film Estirable Transparente 30cm',75, 280, 'Rollo',   8.00,  25, 10);
+INSERT INTO Producto (Codigo_Producto, Nombre, Stock_Tienda, Stock_Almacen, Unidad_Medida, Precio, Stock_Minimo, ID_Categoria)
+VALUES ('PROD-011', 'Vasos Descartables 200ml',150, 500, 'Paquete', 3.50,  50, 1),
+('PROD-012', 'Bolsas de Polietileno 30x40cm',200, 800, 'Paquete', 5.00,  80, 2);
+Select * from producto;

@@ -97,4 +97,8 @@ BEGIN
 	END IF;
 END //
 DELIMITER ;
+Select * from categoria;
 Select * from cliente;
+Select * from producto;
+Select * from pedido;
+Select * from detalles_pedido;
